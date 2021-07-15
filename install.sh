@@ -123,7 +123,7 @@ REPLACE="
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "        iOS Emoji 14.2         "
+  ui_print "        iOS Emoji 14.6         "
   ui_print "*******************************"
 }
 
@@ -132,9 +132,29 @@ print_modname() {
 on_install() {
   # The following is the default implementation: extract $ZIPFILE/system to $MODPATH
   # Extend/change the logic to whatever you want
+  CUR_EMOJI="NotoColorEmoji.ttf"
+  MSG_DIR="/data/data/com.facebook.orca"
+  FB_DIR="/data/data/com.facebook.katana"
+  EMOJI_DIR="app_ras_blobs"
   ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
+  if [ -d "$MSG_DIR" ]; then
+    echo "- Replacing Messenger Emojis"
+    cd $MSG_DIR
+    rm -rf $EMOJI_DIR
+    mkdir $EMOJI_DIR
+    cd $EMOJI_DIR
+    cp $MODPATH/system/fonts/$CUR_EMOJI ./FacebookEmoji.ttf
+  fi
+  if [ -d "$FB_DIR" ]; then
+    echo "- Replacing Facebook Emojis"
+    cd $FB_DIR
+    rm -rf $EMOJI_DIR
+    mkdir $EMOJI_DIR
+    cd $EMOJI_DIR
+    cp $MODPATH/system/fonts/$CUR_EMOJI ./FacebookEmoji.ttf
+  fi
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
   FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' $MIRRORPATH$FONTS)
@@ -151,6 +171,9 @@ on_install() {
 set_permissions() {
   # The following is the default rule, DO NOT remove
   set_perm_recursive $MODPATH 0 0 0755 0644
+  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
+  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
+  set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
 
   # Here are some examples:
   # set_perm_recursive  $MODPATH/system/lib       0     0       0755      0644
