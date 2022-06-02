@@ -6,7 +6,7 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 
 ## To-Do List
 - Find a way to delete the font on Data/Fonts/Files/random name folder to add compability to Android 12 (is the folder name completely random?)
-- ~~Find a way to combine both normal module and samgsung module~~
+- ~~Find a way to combine both normal module and Samsung module~~
 - ~~Add compatibility for LG and HTC Devices~~
 
 ## Changelog
