@@ -10,6 +10,11 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 - ~~Add compatibility for LG and HTC Devices~~ (Need Tester)
 
 ## Changelog
+15.4.3
+- Merged the normal module and the Samsung module into one (Need Tester)
+- Fixed a directory path that was wrong on the install file
+- Added compatibility for other devices like LG and HTC devices (Also need Tester)
+- 
 15.4.2 
 - Added method to potentially completely replace Google Keyboard Emojis
 - Testing updater.json directly from the Magisk Manager
