@@ -6,8 +6,8 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 
 ## To-Do List
 - Find a way to delete the font on Data/Fonts/Files/random name folder to add compability to Android 12 (is the folder name completely random?)
-- Find a way to combine both normal module and samgsung module
-- Add compatibility for LG and HTC Devices
+- ~~Find a way to combine both normal module and samgsung module
+- ~~Add compatibility for LG and HTC Devices
 
 ## Changelog
 15.4.2 
@@ -37,5 +37,5 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 [14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
 
 ## Tested on
-- OnesPlus 8t
+- OnesPlus 8T
 - OnePlus 6
