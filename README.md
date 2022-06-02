@@ -6,10 +6,15 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 
 ## To-Do List
 - Find a way to delete the font on Data/Fonts/Files/random name folder to add compability to Android 12 (is the folder name completely random?)
-- Find a way to edit Data/Data/com.google.android.inputmethod.latin/Shared_Prefs/Flags_Value.xml, to delete the emoji_compat_app_whitelist line to replace Google Keyboard Emoji with iOS emojis
+- Find a way to combine both normal module and samgsung module
+- Add compatibility for LG and HTC Devices
 
 ## Changelog
-15.4.1 _Latest_
+15.4.2 
+- Added method to potentially completely replace Google Keyboard Emojis
+- Testing updater.json directly from the Magisk Manager
+
+15.4.1
 - Added updater json for the ability to update directly from the Magisk Manager
 - Cleaned code a bit
 
@@ -30,3 +35,7 @@ Samsung devices have a separate module on [Release](https://github.com/Keinta15/
 [14.6 new emojis](https://blog.emojipedia.org/ios-14-6-emoji-changelog/)
 
 [14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
+
+## Tested on
+- OnesPlus 8t
+- OnePlus 6
