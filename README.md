@@ -5,7 +5,11 @@ Systemlessly replaces emoji font with iOS Emoji
 Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)
 
 ## Changelog
-15.4 Latest
+15.4.1 Latest
+- Added updater json for the ability to update directly from the Magisk Manager
+- Cleaned code a bit
+
+15.4
 - Added 15.4 Emojis
 
 14.6
