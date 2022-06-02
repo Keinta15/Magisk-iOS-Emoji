@@ -12,7 +12,7 @@ Systemlessly replaces emoji font with iOS Emoji
 ## Changelog
 v15.4.5
 - Removed method to replace Google Keyboard emoji as it was conflicting with other apps settings.
-- 
+
 v15.4.4
 - Forgot to add the xml file to the module
 - Fixed typo
