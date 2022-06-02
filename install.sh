@@ -34,9 +34,6 @@ on_install() {
   MSG_DIR="/data/data/com.facebook.orca"
   FB_DIR="/data/data/com.facebook.katana"
   EMOJI_DIR="app_ras_blobs"
-  GK_XML="flag_value.xml"
-  GK_DIR="/data/data/com.google.android.inputmethod.latin"
-  XML_DIR="Shared_Prefs"
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
   ui_print "- Extracting module files"
@@ -71,15 +68,6 @@ on_install() {
     cp $MODPATH/system/fonts/$TTF_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #Google Keyboard
-  if [ -d "$GK_DIR" ]; then
-    ui_print "- Replacing Google Keyboard Emojis"
-    cd $GK_DIR
-    rm -rf $XML_DIR
-    mkdir $XML_DIR
-    cd $XML_DIR
-    cp $MODPATH/system/data/data/com.google.android.inputmethod.latin/$GK_XML ./Flags_Value.xml
-  fi
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
   FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' $MIRRORPATH$FONTS)
