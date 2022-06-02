@@ -1,3 +1,6 @@
+# Magisk-iOS-Emoji
+Systemlessly replaces emoji font with iOS Emoji 
+
 ## Changelog
 15.4.3
 - Merged the normal module and the Samsung module into one (Need Tester)
