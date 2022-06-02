@@ -2,12 +2,7 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 ## Samsung devices
-~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Potentially not needed anymore, check latest changelog)
-
-## To-Do List
-- Find a way to delete the font on Data/Fonts/Files/random name folder to add compability to Android 12 (is the folder name completely random?)
-- ~~Find a way to combine both normal module and Samsung module~~ (Need Tester)
-- ~~Add compatibility for LG and HTC Devices~~ (Need Tester)
+~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Potentially not needed anymore, check changelog for v15.4.3)
 
 ## Changelog
 v15.4.5
