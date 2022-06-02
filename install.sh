@@ -24,7 +24,7 @@ REPLACE="
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "        iOS Emoji 15.4.3        "
+  ui_print "        iOS Emoji 15.4.5        "
   ui_print "*******************************"
 }
 
@@ -82,5 +82,4 @@ set_permissions() {
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
-  set_perm_recursive /data/data/com.google.android.inputmethod.latin/Shared_Prefs/Flags_Value.xml 0 0 0755 660
 }
