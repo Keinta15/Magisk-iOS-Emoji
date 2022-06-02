@@ -4,6 +4,10 @@ Systemlessly replaces emoji font with iOS Emoji
 ## Samsung devices
 Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)
 
+## To-Do List
+- Find a way to delete the font on Data/Fonts/Files/random name folder to add compability to Android 12 (is the folder name completely random?)
+- Find a way to edit Data/Data/com.google.android.inputmethod.latin/Shared_Prefs/Flags_Value.xml, to delete the emoji_compat_app_whitelist line to replace Google Keyboard Emoji with iOS emojis
+
 ## Changelog
 15.4.1 _Latest_
 - Added updater json for the ability to update directly from the Magisk Manager
