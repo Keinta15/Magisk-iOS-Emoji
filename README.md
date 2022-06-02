@@ -5,6 +5,18 @@ Systemlessly replaces emoji font with iOS Emoji
 Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)
 
 ## Changelog
+15.4 Latest
+- Added 15.4 Emojis
+
+14.6
+- Added 14.6 Emojis
+- Added method to replace Facebook and Facebook Messenger App's Emojis
+
+14.2
+- Added 14.2 Emojis
+- Fixed a naming error on Samsung Devices
+
+## Changelog for emojis
 [15.4 new emojis](https://blog.emojipedia.org/ios-15-4-emoji-changelog/)
 
 [14.6 new emojis](https://blog.emojipedia.org/ios-14-6-emoji-changelog/)
