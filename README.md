@@ -5,6 +5,11 @@ Systemlessly replaces emoji font with iOS Emoji
 ~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Potentially not needed anymore, check changelog for v15.4.3)
 
 ## Changelog
+v15.4.6
+- Added Android 12 Support
+- Fixed typo on extraction 
+- Added Potential Android 13 Support (need testing)
+
 v15.4.5
 - Removed method to replace Google Keyboard emoji as it was conflicting with other apps settings.
 
