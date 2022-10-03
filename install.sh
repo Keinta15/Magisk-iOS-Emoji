@@ -24,13 +24,12 @@ REPLACE="
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "        iOS Emoji 15.4.5        "
+  ui_print "        iOS Emoji 15.4.6       "
   ui_print "*******************************"
 }
 
 on_install() {
   #Definitions
-  TTF_EMOJI="NotoColorEmoji.ttf"
   MSG_DIR="/data/data/com.facebook.orca"
   FB_DIR="/data/data/com.facebook.katana"
   EMOJI_DIR="app_ras_blobs"
@@ -44,7 +43,7 @@ on_install() {
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf'
   for i in $variants ; do
         if [ -f "/system/fonts/$i" ]; then
-            cp $FONT_DIR/$DEF_EMOJI $FONT_DIR/$i && ui_print "- Replacing $i"
+            cp $FONT_DIR/$FONT_EMOJI $FONT_DIR/$i && ui_print "- Replacing $i"
         fi
   done
   
@@ -55,7 +54,7 @@ on_install() {
     rm -rf $EMOJI_DIR
     mkdir $EMOJI_DIR
     cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$TTF_EMOJI ./FacebookEmoji.ttf
+    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
   #Facebook App
@@ -65,8 +64,28 @@ on_install() {
     rm -rf $EMOJI_DIR
     mkdir $EMOJI_DIR
     cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$TTF_EMOJI ./FacebookEmoji.ttf
+    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
+  
+  #Veryfin Android version
+  android_ver=$(getprop ro.build.version.sdk)
+  #if Android 12 detected
+  if [ $android_ver -ge 31 ]; then
+        DATA_FONT_DIR="/data/fonts/files"
+    if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
+            ui_print "- Android 12 Detected"
+            ui_print "- Checking [$DATA_FONT_DIR]"
+        for dir in $DATA_FONT_DIR/*/ ; do
+                cd $dir
+            for file in * ; do
+                if [ "$file" == *ttf ] ; then
+                    cp $FONT_DIR/$FONT_EMOJI $file && ui_print "- Replacing $file"
+                fi
+                done
+        done
+    fi
+  fi
+  
   
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
