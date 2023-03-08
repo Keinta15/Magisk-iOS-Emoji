@@ -2,7 +2,7 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 ## Samsung devices
-~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Potentially not needed anymore, check changelog for v15.4.3)
+~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Not needed anymore, check changelog for v15.4.3)
 
 ## Changelog
 v15.4.6
@@ -18,7 +18,7 @@ v15.4.4
 - Fixed typo
 
 15.4.3
-- Merged the normal module and the Samsung module into one (Need Testing)
+- Merged the normal module and the Samsung module into one
 - Fixed a directory path that was wrong on the install file
 - Added compatibility for other devices like LG and HTC
 
