@@ -15,7 +15,7 @@ v15.4.4
 - Fixed typo
 
 15.4.3
-- Merged the normal module and the Samsung module into one (Need Testing)
+- Merged the normal module and the Samsung module into one
 - Fixed a directory path that was wrong on the install file
 - Added compatibility for other devices like LG and HTC
 
