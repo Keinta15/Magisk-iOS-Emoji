@@ -5,6 +5,9 @@ Systemlessly replaces emoji font with iOS Emoji
 ~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Not needed anymore, check changelog for v15.4.3)
 
 ## Changelog
+v16.4
+- Added 16.4 Emojis
+
 v15.4.6
 - Added Android 12 Support
 - Fixed typo on extraction 
@@ -42,6 +45,8 @@ v15.4.4
 - Fixed a naming error on Samsung Devices
 
 ## Changelog for emojis
+[16.4 new emojis](https://blog.emojipedia.org/ios-16-4-emoji-changelog/)
+
 [15.4 new emojis](https://blog.emojipedia.org/ios-15-4-emoji-changelog/)
 
 [14.6 new emojis](https://blog.emojipedia.org/ios-14-6-emoji-changelog/)
