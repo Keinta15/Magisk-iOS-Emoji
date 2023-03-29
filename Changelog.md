@@ -9,7 +9,7 @@ v16.4
 v15.4.6
 - Added Android 12 Support
 - Fixed typo on extraction
-- Added Potential Android 13 Support (need testing)
+- Added Android 13 Support
 
 v15.4.5
 - Removed method to replace Google Keyboard emoji as it was conflicting with other apps settings.
