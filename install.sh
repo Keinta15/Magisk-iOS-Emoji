@@ -24,7 +24,7 @@ REPLACE="
 
 print_modname() {
   ui_print "*******************************"
-  ui_print "        iOS Emoji 15.4.6       "
+  ui_print "*       iOS Emoji 16.4        *"
   ui_print "*******************************"
 }
 
@@ -39,8 +39,8 @@ on_install() {
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
-  #Compatibility with different devices and potential Android 13?
-  variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NoyoColorEmojiLegacy.ttf'
+  #Compatibility with different devices and potential Support for Android 13?
+  variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
   for i in $variants ; do
         if [ -f "/system/fonts/$i" ]; then
             cp $FONT_DIR/$FONT_EMOJI $FONT_DIR/$i && ui_print "- Replacing $i"
@@ -67,7 +67,7 @@ on_install() {
     cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #Veryfin Android version
+  #Verifying Android version
   android_ver=$(getprop ro.build.version.sdk)
   #if Android 12 detected
   if [ $android_ver -ge 31 ]; then
