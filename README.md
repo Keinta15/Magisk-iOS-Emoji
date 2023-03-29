@@ -7,6 +7,7 @@ Systemlessly replaces emoji font with iOS Emoji
 ## Changelog
 v16.4
 - Added 16.4 Emojis
+- Fixed Typo
 
 v15.4.6
 - Added Android 12 Support
