@@ -58,3 +58,4 @@ v15.4.4
 - OnesPlus 8T (A13)
 - OnePlus 6
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
+- Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
