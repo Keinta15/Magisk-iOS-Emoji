@@ -1,9 +1,6 @@
 # Magisk-iOS-Emoji
 Systemlessly replaces emoji font with iOS Emoji 
 
-## Samsung devices
-~~Samsung devices have a separate module on [Release](https://github.com/Keinta15/Magisk-iOS-Emoji/releases)~~ (Not needed anymore, check changelog for v15.4.3)
-
 ## Changelog
 v16.4
 - Added 16.4 Emojis
@@ -57,5 +54,9 @@ v15.4.4
 ## Tested on
 - OnesPlus 8T (A13)
 - OnePlus 6
+- Reported working by user clickkz on OnePlus 10 Pro (Oxygen OS 13.1)
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
 - Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
+
+## Troubleshooting 
+If it doesn't work delete the font under Data/Files/(Random folder name)
