@@ -54,7 +54,7 @@ v15.4.4
 ## Tested on
 - OnesPlus 8T (A13)
 - OnePlus 6
-- Reported working by user on OnePlus 11 (OxygenOS - CPH2449 - A.09)
+- Reported working by user tkj94 on OnePlus 11 (OxygenOS - CPH2449 - A.09)
 - Reported working by user clickkz on OnePlus 10 Pro (Oxygen OS 13.1)
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
 - Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
