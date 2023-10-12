@@ -56,8 +56,11 @@ v15.4.4
 - OnePlus 6
 - Reported working by user tkj94 on OnePlus 11 (OxygenOS - CPH2449 - A.09)
 - Reported working by user clickkz on OnePlus 10 Pro (Oxygen OS 13.1)
+- Reported working by user Electric1447 on OnePlus 9 Pro (LineageOS 20)
+- Reported working by user adajan47 on Xiaomi POCO M3 (Pixel Experience) 
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
 - Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
+- Reported working by user GDPlayer on Samsung Galaxy A02
 
 ## Troubleshooting 
 If it doesn't work delete all files under /data/font/files/(Random folder name)
