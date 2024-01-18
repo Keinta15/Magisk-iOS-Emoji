@@ -51,6 +51,9 @@ v15.4.4
 
 [14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
 
+## Troubleshooting 
+If it doesn't work delete all files under /data/font/files/(Random folder name)
+
 ## Tested on
 - OnesPlus 8T (A13)
 - OnePlus 6
@@ -61,6 +64,3 @@ v15.4.4
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
 - Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
 - Reported working by user GDPlayer on Samsung Galaxy A02
-
-## Troubleshooting 
-If it doesn't work delete all files under /data/font/files/(Random folder name)
