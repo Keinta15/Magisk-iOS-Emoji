@@ -55,6 +55,7 @@ v15.4.4
 If it doesn't work delete all files under /data/font/files/(Random folder name)
 
 ## Tested on
+- OnesPlus 11 (A14)
 - OnesPlus 8T (A13)
 - OnePlus 6
 - Reported working by user tkj94 on OnePlus 11 (OxygenOS - CPH2449 - A.09)
@@ -64,3 +65,6 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 - Reported working by user mrjshzk on Redmi Note 10 Pro (A13/AOSP)
 - Reported working by user phlexian on S22Ultra (OneUI 5.0 - S908B)
 - Reported working by user GDPlayer on Samsung Galaxy A02
+- Reported working by user adajan47 on Samsung Galaxy A32 (OneUI 5.1)
+- Reported working by user ozogorc on Redmi Note 12 Pro (A13)
+- Reported working by user devnoname120 on Xiaomi Mi Note 10 Lite (A14)
