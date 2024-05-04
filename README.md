@@ -2,7 +2,7 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 > [!TIP]
-> If you encounter issues installing and using KernelSU, consider trying either [module from dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji) or this [module from bugreportion](https://github.com/bugreportion/Magisk-iOS-Emoji).
+> If you encounter issues installing and using on KernelSU, consider trying either [module from dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji) or this [module from bugreportion](https://github.com/bugreportion/Magisk-iOS-Emoji).
 
 > I'll be working on streamlining the code and adding KernelSU support soon. Life has been quite busy lately!
 
