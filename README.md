@@ -1,6 +1,10 @@
 # Magisk-iOS-Emoji
 Systemlessly replaces emoji font with iOS Emoji 
 
+> [!TIP]
+> If you encounter issues installing and using KernelSU, consider trying either [module from dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji) or this [module from bugreportion](https://github.com/bugreportion/Magisk-iOS-Emoji)
+> I'll be working on streamlining the code and adding KernelSU support soon. Life has been quite busy lately!
+
 ## Changelog
 v17.4
 - Added 17.4 Emojis
@@ -59,8 +63,6 @@ v15.4.4
 
 ## Troubleshooting 
 If it doesn't work delete all files under /data/font/files/(Random folder name)
-
-If having issues installing and using with KernelSU, try this [module from dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji)
 
 ## Tested on
 - OnesPlus 11 (A14)
