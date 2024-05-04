@@ -2,6 +2,9 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 ## Changelog
+v17.4
+- Added 17.4 Emojis
+
 v16.4
 - Added 16.4 Emojis
 - Fixed Typo
@@ -43,6 +46,8 @@ v15.4.4
 - Fixed a naming error on Samsung Devices
 
 ## Changelog for emojis
+[17.4 new emojis](https://blog.emojipedia.org/ios-17-4-emoji-changelog/)
+
 [16.4 new emojis](https://blog.emojipedia.org/ios-16-4-emoji-changelog/)
 
 [15.4 new emojis](https://blog.emojipedia.org/ios-15-4-emoji-changelog/)
@@ -53,6 +58,8 @@ v15.4.4
 
 ## Troubleshooting 
 If it doesn't work delete all files under /data/font/files/(Random folder name)
+
+If having issues installing and using with KernelSU, try this [module from dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji)
 
 ## Tested on
 - OnesPlus 11 (A14)
