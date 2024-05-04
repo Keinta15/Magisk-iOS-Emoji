@@ -85,7 +85,12 @@ on_install() {
         done
     fi
   fi
-  
+  #clear cache data of Gboard
+    echo "- Clearing Gboard Cache"
+    [ -d /data/data/com.google.android.inputmethod.latin ] &&
+        find /data -type d -path '*inputmethod.latin*/*cache*' \
+                           -exec rm -rf {} + &&
+        am force-stop com.google.android.inputmethod.latin && echo "- Done"
   
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
@@ -102,3 +107,4 @@ set_permissions() {
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
 }
+
