@@ -14,7 +14,7 @@ v17.4
 v16.4
 - Added 16.4 Emojis
 - Fixed Typo
-
+<details><summary>Click to view prior changelogs</summary>
 v15.4.6
 - Added Android 12 Support
 - Fixed typo on extraction 
@@ -50,6 +50,7 @@ v15.4.4
 14.2
 - Added 14.2 Emojis
 - Fixed a naming error on Samsung Devices
+</details>
 
 ## Changelog for emojis
 [17.4 new emojis](https://blog.emojipedia.org/ios-17-4-emoji-changelog/)
