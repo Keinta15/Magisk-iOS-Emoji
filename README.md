@@ -15,6 +15,7 @@ v16.4
 - Added 16.4 Emojis
 - Fixed Typo
 <details><summary>Click to view prior changelogs</summary>
+
 v15.4.6
 - Added Android 12 Support
 - Fixed typo on extraction 
