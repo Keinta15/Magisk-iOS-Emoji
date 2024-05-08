@@ -69,4 +69,4 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 - OnesPlus 11 (A14)
 - OnesPlus 8T (A13)
 - OnePlus 6
-- [Reported working by user](https://github.com/Keinta15/Magisk-iOS-Emoji/issues?q=is%3Aissue+is%3Aclosed+label%3A%22reported+working%22)
+- [Reported working by users](https://github.com/Keinta15/Magisk-iOS-Emoji/issues?q=is%3Aissue+is%3Aclosed+label%3A%22reported+working%22)
