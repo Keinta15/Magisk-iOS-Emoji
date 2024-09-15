@@ -27,8 +27,6 @@ MODDIR="${0%/*}"
 
 # Adding Magisk Canary 27007 support?
 NVBASE=data/adb
-RVPATH=$NVBASE/rvhc/${MODDIR##*/}.apk
-. "$MODDIR/config"
 
 # Path to the custom emoji font file
 FONT_FILE="$MODDIR/system/fonts/NotoColorEmoji.ttf"
