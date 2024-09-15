@@ -25,8 +25,8 @@ SYSTEM_FONT_DIR="/system/fonts"
 # Get the directory where the script is located
 MODDIR="${0%/*}"
 
-# Adding Magisk Canary 27007 support?
-NVBASE=data/adb
+# 
+BASE=data/adb
 
 # Path to the custom emoji font file
 FONT_FILE="$MODDIR/system/fonts/NotoColorEmoji.ttf"
