@@ -72,3 +72,10 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 - OnesPlus 8T (A13)
 - OnePlus 6
 - [Reported working by users](https://github.com/Keinta15/Magisk-iOS-Emoji/issues?q=is%3Aissue+is%3Aclosed+label%3A%22reported+working%22)
+
+## To-Do List
+- ~~Add Magisk 27005+ Support~~ (added on [b8339eb](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b8339eb2a38d0876d2c8d640329e517816ced6ce))
+- Fix compatibility issues with KernelSU
+- Add OverlayFS Support
+- Moved away from Install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to Customize.sh
+- Streamlined the code
