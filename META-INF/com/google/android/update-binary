@@ -76,7 +76,7 @@ unzip -o "$ZIPFILE" module.prop -d $TMPDIR >&2
 [ ! -f $TMPDIR/module.prop ] && abort "! Unable to extract zip file!"
 
 $BOOTMODE && MODDIRNAME=modules_update || MODDIRNAME=modules
-MODULEROOT=$NVBASE/$MODDIRNAME
+MODULEROOT=/data/adb/$MODDIRNAME
 MODID=`grep_prop id $TMPDIR/module.prop`
 MODPATH=$MODULEROOT/$MODID
 MODNAME=`grep_prop name $TMPDIR/module.prop`
@@ -144,8 +144,8 @@ done
 
 if $BOOTMODE; then
   # Update info for Magisk Manager
-  mktouch $NVBASE/modules/$MODID/update
-  cp -af $MODPATH/module.prop $NVBASE/modules/$MODID/module.prop
+  mktouch /data/adb/modules/$MODID/update
+  cp -af $MODPATH/module.prop /data/adb/modules/$MODID/module.prop
 fi
 
 # Copy over custom sepolicy rules
