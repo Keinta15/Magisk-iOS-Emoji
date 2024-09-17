@@ -1,3 +1,4 @@
+# Module configurations
 AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
@@ -14,6 +15,7 @@ REPLACE_EXAMPLE="
 REPLACE="
 "
 
+# Define module directory
 MODDIR="${0%/*}"
 
 print_modname() {
@@ -26,9 +28,10 @@ on_install() {
   # Definitions
   FONT_DIR=$MODDIR/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
+
+  unzip -o "$ZIPFILE" 'system/*' -d $MODDIR >&2
   ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
-  unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
   # Compatibility with different devices and potential Support for Android 13?
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
@@ -45,17 +48,18 @@ on_install() {
                            -exec rm -rf {} + &&
         am force-stop com.google.android.inputmethod.latin && echo "- Done"
   
+  # Handle fonts.xml
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
   FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' $MIRRORPATH$FONTS)
   for font in $FONTFILES
   do
-    ln -s /system/fonts/NotoColorEmoji.ttf $MODPATH/system/fonts/$font
+    ln -s /system/fonts/NotoColorEmoji.ttf $MODDIR/system/fonts/$font
   done
 }
 
 set_permissions() {
-  set_perm_recursive $MODPATH 0 0 0755 0644
+  set_perm_recursive $MODDIR 0 0 0755 0644
 }
 
 # Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
