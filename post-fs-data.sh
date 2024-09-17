@@ -48,6 +48,7 @@ if package_installed "com.facebook.orca"; then
     ui_print "- Facebook Messenger Installed Detected"
     ui_print "- Mounting custom emoji font for Facebook Messenger"
     mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf"
+    am force-stop com.facebook.orca && ui_print "- Done"
 fi
 
 # Mount Facebook emoji font if Facebook is installed
@@ -55,4 +56,10 @@ if package_installed "com.facebook.katana"; then
     ui_print "- Facebook Installed Detected"
     ui_print "- Mounting custom emoji font for Facebook"
     mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf"
+    am force-stop com.facebook.katana && ui_print "- Done"
 fi
+
+## Possible Font replacers? 
+## pm disable com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider
+## pm disable com.google.android.gms/com.google.android.gms.fonts.update.UpdateSchedulerService	
+## rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf | grep -E "Emoji")
