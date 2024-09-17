@@ -79,3 +79,5 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 - ~~Add OverlayFS Support~~ (added on [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9) thanks to [bugreportion](https://github.com/bugreportion))
 - ~~Moved away from install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to customize.sh~~ (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b))
 - Streamlined the code
+- Look into adding a service.sh
+- Look into GMS Font providers
