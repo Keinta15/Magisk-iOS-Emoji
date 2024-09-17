@@ -65,24 +65,6 @@ on_install() {
     cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #Verifying Android version
-  android_ver=$(getprop ro.build.version.sdk)
-  #if Android 12 detected
-  if [ $android_ver -ge 31 ]; then
-        DATA_FONT_DIR="/data/fonts/files"
-    if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
-            ui_print "- Android 12+ Detected"
-            ui_print "- Checking [$DATA_FONT_DIR]"
-        for dir in $DATA_FONT_DIR/*/ ; do
-                cd $dir
-            for file in * ; do
-                if [ "$file" == *ttf ] ; then
-                    cp $FONT_DIR/$FONT_EMOJI $file && ui_print "- Replacing $file"
-                fi
-                done
-        done
-    fi
-  fi
   #clear cache data of Gboard
     ui_print "- Clearing Gboard Cache"
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
