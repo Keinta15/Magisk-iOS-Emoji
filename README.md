@@ -78,4 +78,5 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 - Fix compatibility issues with KernelSU (check [references](https://kernelsu.org/guide/difference-with-magisk.html))
 - ~~Add OverlayFS Support~~ (added on [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9) thanks to [bugreportion](https://github.com/bugreportion))
 - ~~Moved away from install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to customize.sh~~ (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b))
+- ~~Add Facebook/Messenger package detection function~~ (added on [d72c7e1](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/d72c7e16ccba8ca2b767e1efc0f76eb3b8128419) based on [dtingley11](https://github.com/dtingley11/KernelSU-iOS-Emoji/commit/55f0b673baf5d8acc8da64c0d5a60bc06e3c25a7))
 - Streamlined the code
