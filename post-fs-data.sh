@@ -1,14 +1,8 @@
-MODDIR=${0%/*}
-
-# Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion)
-[ -d /data/fonts ] && rm -rf /data/fonts
-
-
-# Set paths relative to the module's directory
-MODDIR="${0%/*}"
-FONT_FILE="$MODDIR/system/fonts/NotoColorEmoji.ttf"
+# Define paths for font files
+FONT_DIR="$MODPATH/system/fonts"
+FONT_EMOJI="NotoColorEmoji.ttf"
 SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
-FACEBOOK_FONT_FILE="$MODDIR/system/fonts/NotoColorEmoji.ttf"
+FACEBOOK_FONT_FILE="$FONT_DIR/NotoColorEmoji.ttf"
 
 # Function to check if a package is installed
 package_installed() {
@@ -31,27 +25,31 @@ mount_font() {
     # Attempt to mount and set permissions
     if mount -o bind "$source" "$target"; then
         chmod 644 "$target"
-        ui_print "Successfully mounted $source to $target and set permissions"
+        ui_print "- Successfully mounted $source to $target and set permissions"
     else
-        ui_print "Failed to mount $source to $target"
+        ui_print "- Failed to mount $source to $target"
     fi
 }
 
+# Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion)
+[ -d /data/fonts ] && rm -rf /data/fonts
+ui_print "- Removing existing /data/fonts directory"
+
 # Mount system emoji font
-if [ -f "$FONT_FILE" ]; then
-    mount_font "$FONT_FILE" "$SYSTEM_FONT_FILE"
+if [ -f "$FONT_DIR/$FONT_EMOJI" ]; then
+    mount_font "$FONT_DIR/$FONT_EMOJI" "$SYSTEM_FONT_FILE"
 fi
 
 # Mount Facebook emoji font if Facebook Messenger is installed
 if package_installed "com.facebook.orca"; then
-    ui_print "Facebook Messenger Installed Detected"
-    ui_print "Mounting custom emoji font for Facebook Messenger"
+    ui_print "- Facebook Messenger Installed Detected"
+    ui_print "- Mounting custom emoji font for Facebook Messenger"
     mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf"
 fi
 
 # Mount Facebook emoji font if Facebook is installed
 if package_installed "com.facebook.katana"; then
-    ui_print "Facebook Installed Detected"
-    ui_print "Mounting custom emoji font for Facebook"
+    ui_print "- Facebook Installed Detected"
+    ui_print "- Mounting custom emoji font for Facebook"
     mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf"
 fi
