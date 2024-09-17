@@ -1,5 +1,6 @@
 # Define paths for font files
-FONT_DIR="$MODPATH/system/fonts"
+MODDIR="${0%/*}"
+FONT_DIR="$MODDIR/system/fonts"
 FONT_EMOJI="NotoColorEmoji.ttf"
 SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
 FACEBOOK_FONT_FILE="$FONT_DIR/NotoColorEmoji.ttf"
