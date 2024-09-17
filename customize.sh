@@ -1,9 +1,3 @@
-##########################################################################################
-#
-# Installer Script
-#
-##########################################################################################
-
 AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
@@ -20,6 +14,8 @@ REPLACE_EXAMPLE="
 REPLACE="
 "
 
+MODDIR="${0%/*}"
+
 print_modname() {
   ui_print "*******************************"
   ui_print "*       iOS Emoji 17.4        *"
@@ -28,7 +24,7 @@ print_modname() {
 
 on_install() {
   # Definitions
-  FONT_DIR=$MODPATH/system/fonts
+  FONT_DIR=$MODDIR/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
   ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
