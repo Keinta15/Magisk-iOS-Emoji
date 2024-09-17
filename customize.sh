@@ -27,17 +27,14 @@ print_modname() {
 }
 
 on_install() {
-  #Definitions
-  MSG_DIR="/data/data/com.facebook.orca"
-  FB_DIR="/data/data/com.facebook.katana"
-  EMOJI_DIR="app_ras_blobs"
+  # Definitions
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
   ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
-  #Compatibility with different devices and potential Support for Android 13?
+  # Compatibility with different devices and potential Support for Android 13?
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
   for i in $variants ; do
         if [ -f "/system/fonts/$i" ]; then
@@ -45,27 +42,7 @@ on_install() {
         fi
   done
   
-  #Facebook Messenger
-  if [ -d "$MSG_DIR" ]; then
-    ui_print "- Replacing Messenger Emojis"
-    cd $MSG_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
-  fi
-  
-  #Facebook App
-  if [ -d "$FB_DIR" ]; then
-    ui_print "- Replacing Facebook Emojis"
-    cd $FB_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
-  fi
-  
-  #clear cache data of Gboard
+  # Clear cache data of Gboard
     ui_print "- Clearing Gboard Cache"
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
         find /data -type d -path '*inputmethod.latin*/*cache*' \
@@ -85,7 +62,7 @@ set_permissions() {
   set_perm_recursive $MODPATH 0 0 0755 0644
 }
 
-#Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
+# Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
 OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
 
