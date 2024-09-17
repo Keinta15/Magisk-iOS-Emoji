@@ -4,12 +4,10 @@
 #
 ##########################################################################################
 
+AUTOMOUNT=true
 SKIPMOUNT=false
-
 PROPFILE=false
-
 POSTFSDATA=false
-
 LATESTARTSERVICE=false
 
 REPLACE_EXAMPLE="
@@ -73,7 +71,7 @@ on_install() {
   if [ $android_ver -ge 31 ]; then
         DATA_FONT_DIR="/data/fonts/files"
     if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
-            ui_print "- Android 12 Detected"
+            ui_print "- Android 12+ Detected"
             ui_print "- Checking [$DATA_FONT_DIR]"
         for dir in $DATA_FONT_DIR/*/ ; do
                 cd $dir
@@ -86,7 +84,7 @@ on_install() {
     fi
   fi
   #clear cache data of Gboard
-    echo "- Clearing Gboard Cache"
+    ui_print "- Clearing Gboard Cache"
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
         find /data -type d -path '*inputmethod.latin*/*cache*' \
                            -exec rm -rf {} + &&
@@ -107,4 +105,3 @@ set_permissions() {
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
 }
-
