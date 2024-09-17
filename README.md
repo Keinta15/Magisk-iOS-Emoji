@@ -76,6 +76,6 @@ If it doesn't work delete all files under /data/font/files/(Random folder name)
 ## To-Do List
 - ~~Add Magisk 27005+ Support~~ (added on [b8339eb](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b8339eb2a38d0876d2c8d640329e517816ced6ce))
 - Fix compatibility issues with KernelSU
-- Add OverlayFS Support
-- Moved away from Install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to Customize.sh
+- ~~Add OverlayFS Support~~ (added on [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9)
+- ~~Moved away from install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to customize.sh~~ (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b)
 - Streamlined the code
