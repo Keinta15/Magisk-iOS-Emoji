@@ -8,17 +8,46 @@ LATESTARTSERVICE=false
   ui_print "*       iOS Emoji 17.4        *"
   ui_print "*******************************"
 
-  #Definitions
+  # Definitions
   MSG_DIR="/data/data/com.facebook.orca"
   FB_DIR="/data/data/com.facebook.katana"
   EMOJI_DIR="app_ras_blobs"
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
+  
+  # Creating functions:
+  # Function to check if a package is installed
+  package_installed() {
+      local package="$1"
+      if pm list packages | grep -q "$package"; then
+          return 0
+      else
+          return 1
+      fi
+  }
+  
+  # Function to mount a font file and set permissions
+  mount_font() {
+      local source="$1"
+      local target="$2"
+      
+      # Ensure the target directory exists
+      mkdir -p "$(dirname "$target")"
+      
+      # Attempt to mount and set permissions
+      if mount -o bind "$source" "$target"; then
+          chmod 644 "$target"
+          ui_print "- Successfully mounted $source to $target and set permissions"
+      else
+          ui_print "- Failed to mount $source to $target"
+      fi
+  }
+
   ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
-  #Compatibility with different devices and potential Support for Android 13+ with NotoColorEmojiLegacy
+  # Compatibility with different devices and potential Support for Android 13+ with NotoColorEmojiLegacy
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
   for i in $variants ; do
         if [ -f "/system/fonts/$i" ]; then
@@ -46,9 +75,9 @@ LATESTARTSERVICE=false
     cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #Verifying Android version
+  # Verifying Android version
   android_ver=$(getprop ro.build.version.sdk)
-  #if Android 12 detected
+  # if Android 12 detected
   if [ $android_ver -ge 31 ]; then
         DATA_FONT_DIR="/data/fonts/files"
     if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
@@ -64,7 +93,8 @@ LATESTARTSERVICE=false
         done
     fi
   fi
-  #clear cache data of Gboard
+
+  # Clear cache data of Gboard
     ui_print "- Clearing Gboard Cache"
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
         find /data -type d -path '*inputmethod.latin*/*cache*' \
@@ -86,7 +116,7 @@ LATESTARTSERVICE=false
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
   ui_print "- Done"
   ui_print "- Enjoy :)"
-#Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
+# Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
 OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
 
