@@ -12,6 +12,7 @@ LATESTARTSERVICE=false
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
   SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
+  GB_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
   
   # Creating functions:
   # Function to check if a package is installed
@@ -74,12 +75,33 @@ LATESTARTSERVICE=false
       am force-stop com.facebook.katana && ui_print "- Done"
   fi
 
-#  if package_installed "com.google.android.gms"; then
-#      ui_print "- GBoard Installed Detected"
-#      ui_print "- Mounting custom emoji font for GBoard"
-#      mount_font "$FONT_DIR/$FONT_EMOJI" "/data/data/com.google.android.gms/files/fonts/opentype/Noto_Color_Emoji_Compat.ttf"
-#      am force-stop com.google.android.gms && ui_print "- Done"
-#  fi 
+  # Check if GBoard is installed
+  if package_installed "com.google.android.inputmethod.latin"; then
+     # Replace GBoard Emojis
+      GBOARD_FONTS_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
+  
+      if [ -d "$GBOARD_FONTS_DIR" ]; then
+          for i in "$GBOARD_FONTS_DIR"/*; do
+             if [[ "$i" == Noto_Color_Emoji_Compat*.ttf ]]; then
+                  ui_print "[-] Found GBoard emoji font: $i"
+                  
+                  if cp "$MODPATH/$FONT_EMOJI" "$i"; then
+                      font_path="$i"
+                      set_perm_recursive "$font_path" 0 0 0755 700
+                      ui_print "[-] Successfully replaced GBoard Emoji"
+                  fi
+              fi
+          done
+      fi
+
+    # Clear GBoard Cache
+      ui_print "- Clearing Gboard Cache"
+      if [ -d /data/data/com.google.android.inputmethod.latin ]; then
+          find /data -type d -path '*inputmethod.latin*/*cache*' \
+                     -exec rm -rf {} + &&
+          am force-stop com.google.android.inputmethod.latin && ui_print "- Done"
+      fi
+
 
   # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion), basically anything Android 12+
   if [ -d /data/fonts ]; then
@@ -87,12 +109,6 @@ LATESTARTSERVICE=false
       ui_print "- Removing existing /data/fonts directory"
   fi
 
-  # Clear cache data of Gboard
-    ui_print "- Clearing Gboard Cache"
-    [ -d /data/data/com.google.android.inputmethod.latin ] &&
-        find /data -type d -path '*inputmethod.latin*/*cache*' \
-                           -exec rm -rf {} + &&
-        am force-stop com.google.android.inputmethod.latin && echo "- Done"
   
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
