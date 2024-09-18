@@ -9,11 +9,10 @@ LATESTARTSERVICE=false
   ui_print "*******************************"
 
   # Definitions
-  MSG_DIR="/data/data/com.facebook.orca"
-  FB_DIR="/data/data/com.facebook.katana"
-  EMOJI_DIR="app_ras_blobs"
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
+  SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
+  FACEBOOK_FONT_FILE="$FONT_DIR/NotoColorEmoji.ttf"
   
   # Creating functions:
   # Function to check if a package is installed
@@ -55,43 +54,31 @@ LATESTARTSERVICE=false
         fi
   done
   
-  #Facebook Messenger
-  if [ -d "$MSG_DIR" ]; then
-    ui_print "- Replacing Messenger Emojis"
-    cd $MSG_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
+  # Mount system emoji font
+  if [ -f "$FONT_DIR/$FONT_EMOJI" ]; then
+      mount_font "$FONT_DIR/$FONT_EMOJI" "$SYSTEM_FONT_FILE"
   fi
   
-  #Facebook App
-  if [ -d "$FB_DIR" ]; then
-    ui_print "- Replacing Facebook Emojis"
-    cd $FB_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
+  # Mount Facebook emoji font if Facebook Messenger is installed
+  if package_installed "com.facebook.orca"; then
+      ui_print "- Facebook Messenger Installed Detected"
+      ui_print "- Mounting custom emoji font for Facebook Messenger"
+      mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf"
+      am force-stop com.facebook.orca && ui_print "- Done"
   fi
   
-  # Verifying Android version
-  android_ver=$(getprop ro.build.version.sdk)
-  # if Android 12 detected
-  if [ $android_ver -ge 31 ]; then
-        DATA_FONT_DIR="/data/fonts/files"
-    if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
-            ui_print "- Android 12+ Detected"
-            ui_print "- Checking [$DATA_FONT_DIR]"
-        for dir in $DATA_FONT_DIR/*/ ; do
-                cd $dir
-            for file in * ; do
-                if [ "$file" == *ttf ] ; then
-                    cp $FONT_DIR/$FONT_EMOJI $file && ui_print "- Replacing $file"
-                fi
-                done
-        done
-    fi
+  # Mount Facebook emoji font if Facebook is installed
+  if package_installed "com.facebook.katana"; then
+      ui_print "- Facebook Installed Detected"
+      ui_print "- Mounting custom emoji font for Facebook"
+      mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf"
+      am force-stop com.facebook.katana && ui_print "- Done"
+  fi
+    
+  # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion)
+  if [ -d /data/fonts ]; then
+      rm -rf /data/fonts
+      ui_print "- Removing existing /data/fonts directory"
   fi
 
   # Clear cache data of Gboard
@@ -111,19 +98,18 @@ LATESTARTSERVICE=false
   
   ui_print "- Setting Permissions"
   set_perm_recursive $MODPATH 0 0 0755 0644
-  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
-  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
-  set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
   ui_print "- Done"
   ui_print "- Enjoy :)"
-# Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
-OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
-OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
 
-# Only use OverlayFS if Magisk_OverlayFS is installed
-if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] && \
-    /data/adb/modules/magisk_overlayfs/overlayfs_system --test; then
-  ui_print "- Adding support for overlayfs"
-  . /data/adb/modules/magisk_overlayfs/util_functions.sh
-  support_overlayfs && rm -rf "$MODPATH"/system
-fi
+  # Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
+  OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
+  OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
+  
+  # Only use OverlayFS if Magisk_OverlayFS is installed
+  if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] && \
+      /data/adb/modules/magisk_overlayfs/overlayfs_system --test; then
+    ui_print "- Adding support for overlayfs"
+    . /data/adb/modules/magisk_overlayfs/util_functions.sh
+    support_overlayfs && rm -rf "$MODPATH"/system
+  fi
+
