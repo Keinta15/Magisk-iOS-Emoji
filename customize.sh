@@ -12,7 +12,6 @@ LATESTARTSERVICE=false
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
   SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
-  FACEBOOK_FONT_FILE="$FONT_DIR/NotoColorEmoji.ttf"
   
   # Creating functions:
   # Function to check if a package is installed
@@ -63,7 +62,7 @@ LATESTARTSERVICE=false
   if package_installed "com.facebook.orca"; then
       ui_print "- Facebook Messenger Installed Detected"
       ui_print "- Mounting custom emoji font for Facebook Messenger"
-      mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf"
+      mount_font "$FONT_DIR/$FONT_EMOJI" "/data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf"
       am force-stop com.facebook.orca && ui_print "- Done"
   fi
   
@@ -71,10 +70,17 @@ LATESTARTSERVICE=false
   if package_installed "com.facebook.katana"; then
       ui_print "- Facebook Installed Detected"
       ui_print "- Mounting custom emoji font for Facebook"
-      mount_font "$FACEBOOK_FONT_FILE" "/data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf"
+      mount_font "$FONT_DIR/$FONT_EMOJI" "/data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf"
       am force-stop com.facebook.katana && ui_print "- Done"
   fi
-    
+
+#  if package_installed "com.google.android.gms"; then
+#      ui_print "- GBoard Installed Detected"
+#      ui_print "- Mounting custom emoji font for GBoard"
+#      mount_font "$FONT_DIR/$FONT_EMOJI" "/data/data/com.google.android.gms/files/fonts/opentype/Noto_Color_Emoji_Compat.ttf"
+#      am force-stop com.google.android.gms && ui_print "- Done"
+#  fi 
+
   # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion), basically anything Android 12+
   if [ -d /data/fonts ]; then
       rm -rf /data/fonts
