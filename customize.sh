@@ -1,9 +1,3 @@
-##########################################################################################
-#
-# Installer Script
-#
-##########################################################################################
-
 AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
@@ -19,14 +13,10 @@ REPLACE_EXAMPLE="
 
 REPLACE="
 "
-
-print_modname() {
   ui_print "*******************************"
   ui_print "*       iOS Emoji 17.4        *"
   ui_print "*******************************"
-}
 
-on_install() {
   #Definitions
   MSG_DIR="/data/data/com.facebook.orca"
   FB_DIR="/data/data/com.facebook.katana"
@@ -37,7 +27,7 @@ on_install() {
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
-  #Compatibility with different devices and potential Support for Android 13?
+  #Compatibility with different devices and potential Support for Android 13+ with NotoColorEmojiLegacy
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
   for i in $variants ; do
         if [ -f "/system/fonts/$i" ]; then
@@ -97,15 +87,14 @@ on_install() {
   do
     ln -s /system/fonts/NotoColorEmoji.ttf $MODPATH/system/fonts/$font
   done
-}
-
-set_permissions() {
+  
+  ui_print "- Setting Permissions"
   set_perm_recursive $MODPATH 0 0 0755 0644
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
-}
-
+  ui_print "- Done"
+  ui_print "- Enjoy :)"
 #Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
 OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
@@ -113,7 +102,7 @@ OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
 # Only use OverlayFS if Magisk_OverlayFS is installed
 if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] && \
     /data/adb/modules/magisk_overlayfs/overlayfs_system --test; then
-  ui_print "- Add support for overlayfs"
+  ui_print "- Adding support for overlayfs"
   . /data/adb/modules/magisk_overlayfs/util_functions.sh
   support_overlayfs && rm -rf "$MODPATH"/system
 fi
