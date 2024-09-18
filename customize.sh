@@ -4,15 +4,6 @@ PROPFILE=false
 POSTFSDATA=false
 LATESTARTSERVICE=false
 
-REPLACE_EXAMPLE="
-/system/app/Youtube
-/system/priv-app/SystemUI
-/system/priv-app/Settings
-/system/framework
-"
-
-REPLACE="
-"
   ui_print "*******************************"
   ui_print "*       iOS Emoji 17.4        *"
   ui_print "*******************************"
