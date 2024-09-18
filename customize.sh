@@ -75,7 +75,7 @@ LATESTARTSERVICE=false
       am force-stop com.facebook.katana && ui_print "- Done"
   fi
     
-  # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion)
+  # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion), basically anything Android 12+
   if [ -d /data/fonts ]; then
       rm -rf /data/fonts
       ui_print "- Removing existing /data/fonts directory"
