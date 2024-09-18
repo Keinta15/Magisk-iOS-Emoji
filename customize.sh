@@ -83,12 +83,12 @@ LATESTARTSERVICE=false
       if [ -d "$GBOARD_FONTS_DIR" ]; then
           for i in "$GBOARD_FONTS_DIR"/*; do
              if [[ "$i" == Noto_Color_Emoji_Compat*.ttf ]]; then
-                  ui_print "[-] Found GBoard emoji font: $i"
+                  ui_print "- Found GBoard emoji font: $i"
                   
                   if cp "$MODPATH/$FONT_EMOJI" "$i"; then
                       font_path="$i"
                       set_perm_recursive "$font_path" 0 0 0755 700
-                      ui_print "[-] Successfully replaced GBoard Emoji"
+                      ui_print "- Successfully replaced GBoard Emoji"
                   fi
               fi
           done
