@@ -101,7 +101,7 @@ LATESTARTSERVICE=false
                      -exec rm -rf {} + &&
           am force-stop com.google.android.inputmethod.latin && ui_print "- Done"
       fi
-
+  fi
 
   # Check if /data/fonts exists and deletes it (removing the need to run the troubleshooting step, thanks @bugreportion), basically anything Android 12+
   if [ -d /data/fonts ]; then
