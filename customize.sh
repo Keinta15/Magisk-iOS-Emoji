@@ -4,7 +4,6 @@
 #
 ##########################################################################################
 
-AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
 POSTFSDATA=false
@@ -20,20 +19,13 @@ REPLACE_EXAMPLE="
 REPLACE="
 "
 
-print_modname() {
-  ui_print "*******************************"
-  ui_print "*       iOS Emoji 17.4        *"
-  ui_print "*******************************"
-}
-
-on_install() {
   #Definitions
   MSG_DIR="/data/data/com.facebook.orca"
   FB_DIR="/data/data/com.facebook.katana"
   EMOJI_DIR="app_ras_blobs"
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
-  ui_print "- Extracting module files"
+  #ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
 
@@ -88,7 +80,7 @@ on_install() {
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
         find /data -type d -path '*inputmethod.latin*/*cache*' \
                            -exec rm -rf {} + &&
-        am force-stop com.google.android.inputmethod.latin && echo "- Done"
+        am force-stop com.google.android.inputmethod.latin
   
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
@@ -97,14 +89,13 @@ on_install() {
   do
     ln -s /system/fonts/NotoColorEmoji.ttf $MODPATH/system/fonts/$font
   done
-}
 
-set_permissions() {
+
   set_perm_recursive $MODPATH 0 0 0755 0644
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
   set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
   set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
-}
+
 
 #Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
