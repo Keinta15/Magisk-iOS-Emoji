@@ -1,7 +1,10 @@
-# Magisk-iOS-Emoji
-Systemlessly replaces emoji font with iOS Emoji 
 
 ## Changelog
+v17.4.1
+- Added Magisk 27005+ Support (on [b8339eb](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b8339eb2a38d0876d2c8d640329e517816ced6ce) thanks to [E85Addict](https://github.com/E85Addict))
+- Added OverlayFS Support (on [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9) thanks to [bugreportion](https://github.com/bugreportion))
+- Moved away from install.sh as recommended on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and moved to customize.sh (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b))
+
 v17.4
 - Added 17.4 Emojis
 
@@ -13,43 +16,3 @@ v15.4.6
 - Added Android 12 Support
 - Fixed typo on extraction
 - Added Android 13 Support
-
-v15.4.5
-- Removed method to replace Google Keyboard emoji as it was conflicting with other apps settings.
-
-v15.4.4
-- Forgot to add the xml file to the module
-- Fixed typo
-
-v15.4.3
-- Merged the normal module and the Samsung module into one
-- Fixed a directory path that was wrong on the install file
-- Added compatibility for other devices like LG and HTC
-
-v15.4.2 
-- Added method to potentially completely replace Google Keyboard Emojis
-- Testing updater.json directly from the Magisk Manager
-
-v15.4.1
-- Added updater json for the ability to update directly from the Magisk Manager
-- Cleaned code a bit
-
-v15.4
-- Added 15.4 Emojis
-
-v14.6
-- Added 14.6 Emojis
-- Added method to replace Facebook and Facebook Messenger App's Emojis
-
-v14.2
-- Added 14.2 Emojis
-- Fixed a naming error on Samsung Devices
-
-## Changelog for emojis
-[16.4 new emojis](https://blog.emojipedia.org/ios-16-4-emoji-changelog/)
-
-[15.4 new emojis](https://blog.emojipedia.org/ios-15-4-emoji-changelog/)
-
-[14.6 new emojis](https://blog.emojipedia.org/ios-14-6-emoji-changelog/)
-
-[14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
