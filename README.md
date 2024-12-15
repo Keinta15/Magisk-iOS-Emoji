@@ -2,7 +2,7 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 > [!TIP]
-> I'll be working on streamlining the code and adding KernelSU support soon. Life has been quite busy lately!
+> I'll be working on streamlining the code ~~and adding KernelSU support~~ soon. Life has been quite busy lately!
 > Feel free to do a pull request 
 
 ## Changelog
