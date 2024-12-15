@@ -69,7 +69,7 @@ v15.4.4
 [14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
 
 ## Troubleshooting 
-If it doesn't work delete all files under /data/font/files/(Random folder name)
+If it doesn't work delete all files under /data/font/files/(Random folder name) although shouldn't be necesarry due to new added code.
 
 ## Tested on
 - OnesPlus 11 (A14)
