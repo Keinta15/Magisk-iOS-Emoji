@@ -84,5 +84,5 @@ If it doesn't work delete all files under /data/font/files/(Random folder name) 
 - ~~Moved away from install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to customize.sh~~ (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b))
 - ~~Update META-INF~~
 - Streamlined the code
-- Look into adding a service.sh or maybe an action.sh?
+- Look into adding a service.sh or maybe an action.sh? to fix [Issue #31](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/31))
 - Look into GMS Font providers
