@@ -86,3 +86,4 @@ If it doesn't work delete all files under /data/font/files/(Random folder name) 
 - Streamlined the code
 - Look into adding a service.sh or maybe an action.sh? to fix [Issue #31](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/31)
 - Look into GMS Font providers
+- Look into the [Issue #18](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/18)
