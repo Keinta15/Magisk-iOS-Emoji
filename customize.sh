@@ -149,7 +149,9 @@ done
 ui_print "- Setting Permissions"
 set_perm_recursive "$MODPATH" 0 0 0755 0644
 ui_print "- Done"
-ui_print "- Enjoy :)"
+ui_print "- Custom emojis installed successfully!"
+ui_print "- Reboot your device to apply changes."
+ui_print "- Enjoy your new emojis! :)"
 
 # OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0
