@@ -112,6 +112,14 @@ for font in "${variants[@]}"; do
     fi
 done
   
+# Mount system emoji font
+if [ -f "$FONT_DIR/$FONT_EMOJI" ]; then
+    if mount_font "$FONT_DIR/$FONT_EMOJI" "$SYSTEM_FONT_FILE"; then
+        ui_print "- System font mounted successfully"
+    else
+        ui_print "- Failed to mount system font"
+    fi
+fi
 
 # Replace Facebook and Messenger emojis
 replace_emojis "com.facebook.orca" "$MSG_DIR" "$FB_EMOJI_DIR"
@@ -137,13 +145,11 @@ for font in $FONTFILES; do
     ln -s /system/fonts/NotoColorEmoji.ttf "$MODPATH/system/fonts/$font"
 done
 
-
 # Set permissions
 ui_print "- Setting Permissions"
 set_perm_recursive "$MODPATH" 0 0 0755 0644
 ui_print "- Done"
 ui_print "- Enjoy :)"
-
 
 # OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
 OVERLAY_IMAGE_EXTRA=0
