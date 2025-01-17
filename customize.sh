@@ -112,25 +112,10 @@ for font in "${variants[@]}"; do
     fi
 done
   
-  #Facebook Messenger
-  if [ -d "$MSG_DIR" ]; then
-    ui_print "- Replacing Messenger Emojis"
-    cd $MSG_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-     $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
-  fi
-  
-  #Facebook App
-  if [ -d "$FB_DIR" ]; then
-    ui_print "- Replacing Facebook Emojis"
-    cd $FB_DIR
-    rm -rf $EMOJI_DIR
-    mkdir $EMOJI_DIR
-    cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
-  fi
+
+# Replace Facebook and Messenger emojis
+replace_emojis "com.facebook.orca" "$MSG_DIR" "$FB_EMOJI_DIR"
+replace_emojis "com.facebook.katana" "$FB_DIR" "$FB_EMOJI_DIR"
   
 # Clear Gboard cache if installed
 if package_installed "com.google.android.inputmethod.latin"; then
@@ -144,6 +129,7 @@ if [ -d "/data/fonts" ]; then
     ui_print "- Removed existing /data/fonts directory"
 fi
 
+# Handle fonts.xml symlinks
 [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
 FONTS=/system/etc/fonts.xml
 FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' "$MIRRORPATH$FONTS")
