@@ -33,7 +33,6 @@ package_installed() {
     fi
 }
 
-# Function to mount a font file and set permissions
 mount_font() {
     local source="$1"
     local target="$2"
@@ -54,7 +53,6 @@ mount_font() {
     fi
 }
 
-# Function to replace emojis for a specific app
 replace_emojis() {
     local app_name="$1"
     local app_dir="$2"
@@ -70,7 +68,6 @@ replace_emojis() {
     fi
 }
 
-# Function to clear app cache
 clear_cache() {
     local app_name="$1"
     if [ -d "/data/data/$app_name" ]; then
@@ -83,16 +80,23 @@ clear_cache() {
 }
 
   
-  #ui_print "- Extracting module files"
-  ui_print "- Installing Emojis"
-  unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
+# Extract module files
+ui_print "- Extracting module files"
+unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
+    ui_print "- Failed to extract module files"
+    exit 1
+}
 
   #Compatibility with different devices and potential Support for Android 13?
   variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
   for i in $variants ; do
-        if [ -f "/system/fonts/$i" ]; then
-            cp $FONT_DIR/$FONT_EMOJI $FONT_DIR/$i && ui_print "- Replacing $i"
+    if [ -f "/system/fonts/$i" ]; then
+        if cp "$FONT_DIR/$FONT_EMOJI" "$FONT_DIR/$i"; then
+            ui_print "- Replaced $i"
+        else
+            ui_print "- Failed to replace $i"
         fi
+    fi
   done
   
   #Facebook Messenger
@@ -102,7 +106,7 @@ clear_cache() {
     rm -rf $EMOJI_DIR
     mkdir $EMOJI_DIR
     cd $EMOJI_DIR
-    cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
+     $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
   #Facebook App
