@@ -3,21 +3,18 @@
 # Installer Script
 #
 ##########################################################################################
+#!/system/bin/sh
 
+# Script Details
+AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
 POSTFSDATA=false
 LATESTARTSERVICE=false
 
-REPLACE_EXAMPLE="
-/system/app/Youtube
-/system/priv-app/SystemUI
-/system/priv-app/Settings
-/system/framework
-"
-
-REPLACE="
-"
+ui_print "*******************************"
+ui_print "*       iOS Emoji 17.4        *"
+ui_print "*******************************"
 
   #Definitions
   MSG_DIR="/data/data/com.facebook.orca"
@@ -25,6 +22,67 @@ REPLACE="
   EMOJI_DIR="app_ras_blobs"
   FONT_DIR=$MODPATH/system/fonts
   FONT_EMOJI="NotoColorEmoji.ttf"
+
+# Function to check if a package is installed
+package_installed() {
+    local package="$1"
+    if pm list packages | grep -q "$package"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+# Function to mount a font file and set permissions
+mount_font() {
+    local source="$1"
+    local target="$2"
+    
+    if [ ! -f "$source" ]; then
+        ui_print "- Source file $source does not exist"
+        return 1
+    fi
+    
+    mkdir -p "$(dirname "$target")"
+    
+    if mount -o bind "$source" "$target"; then
+        chmod 644 "$target"
+        ui_print "- Successfully mounted $source to $target and set permissions"
+    else
+        ui_print "- Failed to mount $source to $target"
+        return 1
+    fi
+}
+
+# Function to replace emojis for a specific app
+replace_emojis() {
+    local app_name="$1"
+    local app_dir="$2"
+    local emoji_dir="$3"
+    
+    if package_installed "$app_name"; then
+        ui_print "- $app_name Installed Detected"
+        ui_print "- Mounting custom emoji font for $app_name"
+        mount_font "$FONT_DIR/$FONT_EMOJI" "$app_dir/$emoji_dir/FacebookEmoji.ttf"
+        am force-stop "$app_name" && ui_print "- Done"
+    else
+        ui_print "- $app_name not installed, skipping"
+    fi
+}
+
+# Function to clear app cache
+clear_cache() {
+    local app_name="$1"
+    if [ -d "/data/data/$app_name" ]; then
+        find /data -type d -path "*$app_name*/*cache*" -exec rm -rf {} +
+        am force-stop "$app_name"
+        ui_print "- Cleared cache for $app_name"
+    else
+        ui_print "- $app_name cache not found, skipping"
+    fi
+}
+
+  
   #ui_print "- Extracting module files"
   ui_print "- Installing Emojis"
   unzip -o "$ZIPFILE" 'system/*' -d $MODPATH >&2
