@@ -16,12 +16,15 @@ ui_print "*******************************"
 ui_print "*       iOS Emoji 17.4        *"
 ui_print "*******************************"
 
-  #Definitions
-  MSG_DIR="/data/data/com.facebook.orca"
-  FB_DIR="/data/data/com.facebook.katana"
-  EMOJI_DIR="app_ras_blobs"
-  FONT_DIR=$MODPATH/system/fonts
-  FONT_EMOJI="NotoColorEmoji.ttf"
+# Definitions
+FONT_DIR="$MODPATH/system/fonts"
+FONT_EMOJI="NotoColorEmoji.ttf"
+SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
+GBOARD_FONTS_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
+MSG_DIR="/data/data/com.facebook.orca"
+FB_DIR="/data/data/com.facebook.katana"
+FB_EMOJI_DIR="app_ras_blobs" 
+
 
 # Function to check if a package is installed
 package_installed() {
