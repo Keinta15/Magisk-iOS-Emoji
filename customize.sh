@@ -20,7 +20,6 @@ ui_print "*******************************"
 FONT_DIR="$MODPATH/system/fonts"
 FONT_EMOJI="NotoColorEmoji.ttf"
 SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
-GBOARD_FONTS_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
 MSG_DIR="/data/data/com.facebook.orca"
 FB_DIR="/data/data/com.facebook.katana"
 FB_EMOJI_DIR="app_ras_blobs" 
@@ -133,12 +132,11 @@ done
     cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #clear cache data of Gboard
+# Clear Gboard cache if installed
+if package_installed "com.google.android.inputmethod.latin"; then
     ui_print "- Clearing Gboard Cache"
-    [ -d /data/data/com.google.android.inputmethod.latin ] &&
-        find /data -type d -path '*inputmethod.latin*/*cache*' \
-                           -exec rm -rf {} + &&
-        am force-stop com.google.android.inputmethod.latin
+    clear_cache "com.google.android.inputmethod.latin"
+fi
   
 # Remove /data/fonts directory for Android 12+ instead of replacing the files (removing the need to run the troubleshooting step, thanks @reddxae)
 if [ -d "/data/fonts" ]; then
@@ -161,9 +159,9 @@ ui_print "- Done"
 ui_print "- Enjoy :)"
 
 
-#Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
-OVERLAY_IMAGE_EXTRA=0     # number of kb need to be added to overlay.img
-OVERLAY_IMAGE_SHRINK=true # shrink overlay.img or not?
+# OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
+OVERLAY_IMAGE_EXTRA=0
+OVERLAY_IMAGE_SHRINK=true
 
 # Only use OverlayFS if Magisk_OverlayFS is installed
 if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] && \
