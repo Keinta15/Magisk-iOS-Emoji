@@ -119,24 +119,6 @@ unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     cp $MODPATH/system/fonts/$FONT_EMOJI ./FacebookEmoji.ttf
   fi
   
-  #Verifying Android version
-  android_ver=$(getprop ro.build.version.sdk)
-  #if Android 12 detected
-  if [ $android_ver -ge 31 ]; then
-        DATA_FONT_DIR="/data/fonts/files"
-    if [ -d "$DATA_FONT_DIR" ] && [ "$(ls -A $DATA_FONT_DIR)" ]; then
-            ui_print "- Android 12+ Detected"
-            ui_print "- Checking [$DATA_FONT_DIR]"
-        for dir in $DATA_FONT_DIR/*/ ; do
-                cd $dir
-            for file in * ; do
-                if [ "$file" == *ttf ] ; then
-                    cp $FONT_DIR/$FONT_EMOJI $file && ui_print "- Replacing $file"
-                fi
-                done
-        done
-    fi
-  fi
   #clear cache data of Gboard
     ui_print "- Clearing Gboard Cache"
     [ -d /data/data/com.google.android.inputmethod.latin ] &&
@@ -144,6 +126,12 @@ unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
                            -exec rm -rf {} + &&
         am force-stop com.google.android.inputmethod.latin
   
+# Remove /data/fonts directory for Android 12+ instead of replacing the files (removing the need to run the troubleshooting step, thanks @reddxae)
+if [ -d "/data/fonts" ]; then
+    rm -rf "/data/fonts"
+    ui_print "- Removed existing /data/fonts directory"
+fi
+
   [[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
   FONTS=/system/etc/fonts.xml
   FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' $MIRRORPATH$FONTS)
