@@ -154,10 +154,11 @@ for font in $FONTFILES; do
 done
 
 
-  set_perm_recursive $MODPATH 0 0 0755 0644
-  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
-  set_perm_recursive /data/data/com.facebook.katana/app_ras_blobs 0 0 0755 755
-  set_perm_recursive /data/data/com.facebook.orca/app_ras_blobs/FacebookEmoji.ttf 0 0 0755 700
+# Set permissions
+ui_print "- Setting Permissions"
+set_perm_recursive "$MODPATH" 0 0 0755 0644
+ui_print "- Done"
+ui_print "- Enjoy :)"
 
 
 #Adding OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
