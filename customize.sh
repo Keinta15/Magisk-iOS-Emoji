@@ -90,17 +90,28 @@ unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     exit 1
 }
 
-  #Compatibility with different devices and potential Support for Android 13?
-  variants='SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf'
-  for i in $variants ; do
-    if [ -f "/system/fonts/$i" ]; then
-        if cp "$FONT_DIR/$FONT_EMOJI" "$FONT_DIR/$i"; then
-            ui_print "- Replaced $i"
+# Replace system emoji fonts
+ui_print "- Installing Emojis"
+variants=(
+    "SamsungColorEmoji.ttf"
+    "LGNotoColorEmoji.ttf"
+    "HTC_ColorEmoji.ttf"
+    "AndroidEmoji-htc.ttf"
+    "ColorUniEmoji.ttf"
+    "DcmColorEmoji.ttf"
+    "CombinedColorEmoji.ttf"
+    "NotoColorEmojiLegacy.ttf"
+)
+
+for font in "${variants[@]}"; do
+    if [ -f "/system/fonts/$font" ]; then
+        if cp "$FONT_DIR/$FONT_EMOJI" "$FONT_DIR/$font"; then
+            ui_print "- Replaced $font"
         else
-            ui_print "- Failed to replace $i"
+            ui_print "- Failed to replace $font"
         fi
     fi
-  done
+done
   
   #Facebook Messenger
   if [ -d "$MSG_DIR" ]; then
