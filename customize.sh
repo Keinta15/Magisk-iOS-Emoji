@@ -10,7 +10,7 @@ AUTOMOUNT=true
 SKIPMOUNT=false
 PROPFILE=false
 POSTFSDATA=false
-LATESTARTSERVICE=false
+LATESTARTSERVICE=true
 
 ui_print "*******************************"
 ui_print "*       iOS Emoji 17.4        *"
@@ -35,6 +35,7 @@ package_installed() {
     fi
 }
 
+# Function to mount a font file
 mount_font() {
     local source="$1"
     local target="$2"
@@ -43,6 +44,12 @@ mount_font() {
         ui_print "- Source file $source does not exist"
         return 1
     fi
+    
+    local target_dir=$(dirname "$target")
+    if [ ! -d "$target_dir" ]; then
+        ui_print "- Target directory $target_dir does not exist"
+        return 1
+    fi 
     
     mkdir -p "$(dirname "$target")"
     
@@ -55,6 +62,7 @@ mount_font() {
     fi
 }
 
+# Function to replace emojis for a specific app
 replace_emojis() {
     local app_name="$1"
     local app_dir="$2"
@@ -70,6 +78,7 @@ replace_emojis() {
     fi
 }
 
+# Function to clear app cache
 clear_cache() {
     local app_name="$1"
     if [ -d "/data/data/$app_name" ]; then
@@ -119,6 +128,8 @@ if [ -f "$FONT_DIR/$FONT_EMOJI" ]; then
     else
         ui_print "- Failed to mount system font"
     fi
+else
+    ui_print "- Source emoji font not found. Skipping system font mount."
 fi
 
 # Replace Facebook and Messenger emojis
