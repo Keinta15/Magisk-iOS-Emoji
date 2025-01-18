@@ -4,7 +4,7 @@
 MODPATH=${0%/*}
 
 # Logging configuration
-LOGFILE="$MODPATH/service.log" # Log file renamed to "service.log"
+LOGFILE="$MODPATH/service.log" # Log file
 MAX_LOG_SIZE=$((5 * 1024 * 1024)) # 5 MB
 MAX_LOG_FILES=3 # Keep up to 3 archived logs
 MAX_LOG_AGE_DAYS=7 # Delete logs older than 7 days
@@ -48,6 +48,13 @@ service_exists() {
     pm list packages | grep -q "$1"
     return $?
 }
+
+# Log script header
+log "================================================"
+log "iOS Emoji 17.4.6 Magisk Module - Service Script"
+log "Device: $(getprop ro.product.model)"
+log "Android Version: $(getprop ro.build.version.release)"
+log "================================================"
 
 # Wait until the device has completed booting
 while [ "$(getprop sys.boot_completed)" != "1" ]; do
@@ -93,9 +100,6 @@ replace_emoji_fonts() {
             log "Failed to set permissions for: $font"
         else
             log "Successfully set permissions for: $font"
-        fi
-        if ! chown root:root "$font"; then
-            log "Failed to set ownership for: $font"
         fi
     done
 
