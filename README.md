@@ -1,6 +1,10 @@
 # Magisk-iOS-Emoji
 Systemlessly replaces emoji font with iOS Emoji 
 
+[![Stars](https://img.shields.io/github/stars/Keinta15/Magisk-iOS-Emoji?label=Stars&color=blue)](https://github.com/Keinta15/Magisk-iOS-Emoji)
+[![Release](https://img.shields.io/github/v/release/Keinta15/Magisk-iOS-Emoji?label=Release&logo=github)](https://github.com/Keinta15/Magisk-iOS-Emoji/releases/latest)
+[![Download](https://img.shields.io/github/downloads/Keinta15/Magisk-iOS-Emoji/total?label=Downloads&logo=github)](https://github.com/Keinta15/Magisk-iOS-Emoji/releases/)
+
 > [!TIP]
 > ~~I'll be working on streamlining the code and adding KernelSU support~~ soon. Life has been quite busy lately!
 > Feel free to do a pull request 
