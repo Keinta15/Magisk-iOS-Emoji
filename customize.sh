@@ -13,7 +13,7 @@ POSTFSDATA=false
 LATESTARTSERVICE=true
 
 ui_print "*******************************"
-ui_print "*       iOS Emoji 17.4        *"
+ui_print "*       iOS Emoji 17.4.6      *"
 ui_print "*******************************"
 
 # Definitions
