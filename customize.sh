@@ -98,20 +98,12 @@ unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     exit 1
 }
 
+
 # Replace system emoji fonts
 ui_print "- Installing Emojis"
-variants=(
-    "SamsungColorEmoji.ttf"
-    "LGNotoColorEmoji.ttf"
-    "HTC_ColorEmoji.ttf"
-    "AndroidEmoji-htc.ttf"
-    "ColorUniEmoji.ttf"
-    "DcmColorEmoji.ttf"
-    "CombinedColorEmoji.ttf"
-    "NotoColorEmojiLegacy.ttf"
-)
+variants="SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf"
 
-for font in "${variants[@]}"; do
+for font in $variants; do
     if [ -f "/system/fonts/$font" ]; then
         if cp "$FONT_DIR/$FONT_EMOJI" "$FONT_DIR/$font"; then
             ui_print "- Replaced $font"
