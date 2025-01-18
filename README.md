@@ -2,7 +2,7 @@
 Systemlessly replaces emoji font with iOS Emoji 
 
 > [!TIP]
-> I'll be working on streamlining the code ~~and adding KernelSU support~~ soon. Life has been quite busy lately!
+> ~~I'll be working on streamlining the code and adding KernelSU support~~ soon. Life has been quite busy lately!
 > Feel free to do a pull request 
 
 ## Changelog
@@ -69,7 +69,7 @@ v15.4.4
 [14.2 new emojis](https://blog.emojipedia.org/ios-14-2-emoji-changelog/)
 
 ## Troubleshooting 
-If it doesn't work delete all files under /data/font/files/(Random folder name) although shouldn't be necesarry due to new added code.
+If Emoji files are replaced, reboot your phone.
 
 ## Tested on
 - OnesPlus 11 (A14)
@@ -83,7 +83,7 @@ If it doesn't work delete all files under /data/font/files/(Random folder name) 
 - ~~Add OverlayFS Support~~ (added on [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9) thanks to [reddxae](https://github.com/reddxae))
 - ~~Moved away from install.sh based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and move to customize.sh~~ (added on [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b))
 - ~~Update META-INF~~
-- Streamlined the code
-- Look into adding a service.sh or maybe an action.sh? to fix [Issue #31](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/31)
-- Look into GMS Font providers
-- Look into the [Issue #18](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/18) for Nothing phones 
+- ~~Streamlined the code~~
+- ~~Look into adding a service.sh or maybe an action.sh? to fix [Issue #31](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/31)~~
+- ~~Look into GMS Font providers~~
+- ~~Look into the [Issue #18](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/18) for Nothing phones~~ 
