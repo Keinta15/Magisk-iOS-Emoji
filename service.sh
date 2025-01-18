@@ -146,7 +146,7 @@ if ! rm -rf "$DATA_FONTS_DIR"; then
     log "Failed to clean up directory: $DATA_FONTS_DIR"
 fi
 if ! rm -rf "$GMS_FONTS_DIR"/*ttf; then
-    log "Failed to clean up directory: $GMS_FONTS_DIR"
+    log "Failed to clean up ttf files in directory: $GMS_FONTS_DIR"
 fi
 
 log "Service completed."
