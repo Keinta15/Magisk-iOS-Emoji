@@ -1,10 +1,10 @@
 #!/system/bin/sh
 
 # Module directory (where the script is located)
-MODDIR=${0%/*}
+MODPATH=${0%/*}
 
 # Logging configuration
-LOGDIR="$MODDIR/logs"
+LOGDIR="$MODPATH/logs"
 LOGFILE="$LOGDIR/emoji_replace_service.log"
 MAX_LOG_SIZE=$((5 * 1024 * 1024)) # 5 MB
 MAX_LOG_FILES=3 # Keep up to 3 archived logs
@@ -16,6 +16,10 @@ FACEBOOK_APPS="com.facebook.orca com.facebook.katana"
 # GMS font services
 GMS_FONT_PROVIDER="com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider"
 GMS_FONT_UPDATER="com.google.android.gms/com.google.android.gms.fonts.update.UpdateSchedulerService"
+
+# Paths for cleanup
+DATA_FONTS_DIR="/data/fonts"
+GMS_FONTS_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
 
 # Ensure the log directory exists
 mkdir -p "$LOGDIR"
@@ -47,6 +51,12 @@ service_exists() {
     return $?
 }
 
+# Function to handle errors
+handle_error() {
+    log "Error: $1"
+    exit 1
+}
+
 # Wait until the device has completed booting
 while [ "$(getprop sys.boot_completed)" != "1" ]; do
     sleep 5
@@ -64,7 +74,7 @@ replace_emoji_fonts() {
     log "Starting emoji replacement process..."
     
     # Check if the source emoji font exists
-    if [ ! -f "$MODDIR/system/fonts/NotoColorEmoji.ttf" ]; then
+    if [ ! -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" ]; then
         log "Source emoji font not found. Skipping replacement."
         return
     fi
@@ -80,22 +90,32 @@ replace_emoji_fonts() {
     # Replace each emoji font with the custom font
     for font in $EMOJI_FONTS; do
         log "Replacing emoji font: $font"
-        cp "$MODDIR/system/fonts/NotoColorEmoji.ttf" "$font"
+        if ! cp "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$font"; then
+            handle_error "Failed to replace emoji font: $font"
+        fi
         
         # Set permissions for the replaced file
-        chmod 755 "$font"
-        chown 0:0 "$font"
+        if ! chmod 755 "$font"; then
+            handle_error "Failed to set permissions for: $font"
+        fi
+        if ! chown 0:0 "$font"; then
+            handle_error "Failed to set ownership for: $font"
+        fi
     done
 
     # Force-stop Facebook apps after all replacements are done
     log "Force-stopping Facebook apps..."
     for app in $FACEBOOK_APPS; do
-        am force-stop "$app"
+        if ! am force-stop "$app"; then
+            log "Failed to force-stop app: $app"
+        fi
     done
 
     # Set permissions for Facebook app directories
     for app in $FACEBOOK_APPS; do
-        set_perm_recursive "/data/data/$app/app_ras_blobs" 0 0 0755 755
+        if ! set_perm_recursive "/data/data/$app/app_ras_blobs" 0 0 0755 755; then
+            log "Failed to set permissions for app directory: $app"
+        fi
     done
 }
 
@@ -104,21 +124,29 @@ replace_emoji_fonts
 # Disable GMS font services if they exist
 if service_exists "$GMS_FONT_PROVIDER"; then
     log "Disabling GMS font provider: $GMS_FONT_PROVIDER"
-    pm disable "$GMS_FONT_PROVIDER"
+    if ! pm disable "$GMS_FONT_PROVIDER"; then
+        log "Failed to disable GMS font provider: $GMS_FONT_PROVIDER"
+    fi
 else
     log "GMS font provider not found: $GMS_FONT_PROVIDER"
 fi
 
 if service_exists "$GMS_FONT_UPDATER"; then
     log "Disabling GMS font updater: $GMS_FONT_UPDATER"
-    pm disable "$GMS_FONT_UPDATER"
+    if ! pm disable "$GMS_FONT_UPDATER"; then
+        log "Failed to disable GMS font updater: $GMS_FONT_UPDATER"
+    fi
 else
     log "GMS font updater not found: $GMS_FONT_UPDATER"
 fi
 
 # Clean up leftover font files
 log "Cleaning up leftover font files..."
-rm -rf /data/fonts
-rm -rf /data/data/com.google.android.gms/files/fonts/opentype/*ttf
+if ! rm -rf "$DATA_FONTS_DIR"; then
+    log "Failed to clean up directory: $DATA_FONTS_DIR"
+fi
+if ! rm -rf "$GMS_FONTS_DIR"/*ttf; then
+    log "Failed to clean up directory: $GMS_FONTS_DIR"
+fi
 
 log "Service completed."
