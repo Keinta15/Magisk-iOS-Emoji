@@ -52,6 +52,7 @@ service_exists() {
 # Log script header
 log "================================================"
 log "iOS Emoji 17.4.6 service.sh Script"
+log "Brand: $(getprop ro.product.brand)"
 log "Device: $(getprop ro.product.model)"
 log "Android Version: $(getprop ro.build.version.release)"
 log "================================================"
@@ -66,102 +67,112 @@ while [ ! -d /sdcard ]; do
     sleep 5
 done
 
-log "Service started."
+log "INFO: Service started."
 
 # Replace in-app emoji fonts
 replace_emoji_fonts() {
-    log "Starting emoji replacement process..."
-    
+    log "INFO: Starting emoji replacement process..."
+
     # Check if the source emoji font exists
     if [ ! -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" ]; then
-        log "Source emoji font not found. Skipping replacement."
+        log "ERROR: Source emoji font not found. Skipping replacement."
         return
     fi
 
     # Find all .ttf files containing "Emoji" in their names
     EMOJI_FONTS=$(find /data/data -name "*Emoji*.ttf" -print)
-    
+
     if [ -z "$EMOJI_FONTS" ]; then
-        log "No emoji fonts found to replace. Skipping."
+        log "INFO: No emoji fonts found to replace. Skipping."
         return
     fi
 
     # Replace each emoji font with the custom font
     for font in $EMOJI_FONTS; do
-        log "Replacing emoji font: $font"
-        if ! cp "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$font"; then
-            log "Failed to replace emoji font: $font"
-        else
-            log "Successfully replaced emoji font: $font"
+        # Check if the target font file is writable
+        if [ ! -w "$font" ]; then
+            log "ERROR: Font file is not writable: $font"
+            continue
         fi
-        
+
+        log "INFO: Replacing emoji font: $font"
+        if ! cp "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$font"; then
+            log "ERROR: Failed to replace emoji font: $font"
+        else
+            log "INFO: Successfully replaced emoji font: $font"
+        fi
+
         # Set permissions for the replaced file
         if ! chmod 644 "$font"; then
-            log "Failed to set permissions for: $font"
+            log "ERROR: Failed to set permissions for: $font"
         else
-            log "Successfully set permissions for: $font"
+            log "INFO: Successfully set permissions for: $font"
         fi
     done
 
-    log "Emoji replacement process completed."
+    log "INFO: Emoji replacement process completed."
 }
 
 replace_emoji_fonts
 
 # Force-stop Facebook apps after all replacements are done
-log "Force-stopping Facebook apps..."
+log "INFO: Force-stopping Facebook apps..."
 for app in $FACEBOOK_APPS; do
     if ! am force-stop "$app"; then
-        log "Failed to force-stop app: $app"
+        log "ERROR: Failed to force-stop app: $app"
     else
-        log "Successfully force-stopped app: $app"
+        log "INFO: Successfully force-stopped app: $app"
     fi
 done
 
+# Add a delay to allow the system to process the changes
+sleep 2
+
 # Disable GMS font services if they exist
 if service_exists "$GMS_FONT_PROVIDER"; then
-    log "Disabling GMS font provider: $GMS_FONT_PROVIDER"
+    log "INFO: Disabling GMS font provider: $GMS_FONT_PROVIDER"
     if ! pm disable "$GMS_FONT_PROVIDER"; then
-        log "Failed to disable GMS font provider: $GMS_FONT_PROVIDER"
+        log "ERROR: Failed to disable GMS font provider: $GMS_FONT_PROVIDER"
     else
-        log "Successfully disabled GMS font provider: $GMS_FONT_PROVIDER"
+        log "INFO: Successfully disabled GMS font provider: $GMS_FONT_PROVIDER"
     fi
 else
-    log "GMS font provider not found: $GMS_FONT_PROVIDER"
+    log "INFO: GMS font provider not found: $GMS_FONT_PROVIDER"
 fi
 
 if service_exists "$GMS_FONT_UPDATER"; then
-    log "Disabling GMS font updater: $GMS_FONT_UPDATER"
+    log "INFO: Disabling GMS font updater: $GMS_FONT_UPDATER"
     if ! pm disable "$GMS_FONT_UPDATER"; then
-        log "Failed to disable GMS font updater: $GMS_FONT_UPDATER"
+        log "ERROR: Failed to disable GMS font updater: $GMS_FONT_UPDATER"
     else
-        log "Successfully disabled GMS font updater: $GMS_FONT_UPDATER"
+        log "INFO: Successfully disabled GMS font updater: $GMS_FONT_UPDATER"
     fi
 else
-    log "GMS font updater not found: $GMS_FONT_UPDATER"
+    log "INFO: GMS font updater not found: $GMS_FONT_UPDATER"
 fi
 
 # Clean up leftover font files
-log "Cleaning up leftover font files..."
+log "INFO: Cleaning up leftover font files..."
 if [ -d "$DATA_FONTS_DIR" ]; then
     if ! rm -rf "$DATA_FONTS_DIR"; then
-        log "Failed to clean up directory: $DATA_FONTS_DIR"
+        log "ERROR: Failed to clean up directory: $DATA_FONTS_DIR"
     else
-        log "Successfully cleaned up directory: $DATA_FONTS_DIR"
+        log "INFO: Successfully cleaned up directory: $DATA_FONTS_DIR"
     fi
 else
-    log "Directory not found: $DATA_FONTS_DIR"
+    log "INFO: Directory not found: $DATA_FONTS_DIR"
 fi
 
-if [ -d "$GMS_FONTS_DIR" ]; then
-    if ! rm -rf "$GMS_FONTS_DIR"/*ttf; then
-        log "Failed to clean up ttf files in directory: $GMS_FONTS_DIR"
-    else
-        log "Successfully cleaned up ttf files in directory: $GMS_FONTS_DIR"
-    fi
-else
-    log "Directory not found: $GMS_FONTS_DIR"
-fi
+# Commented out the deletion of .ttf files in the opentype directory
+# if [ -d "$GMS_FONTS_DIR" ]; then
+#     if ! rm -rf "$GMS_FONTS_DIR"/*ttf; then
+#         log "ERROR: Failed to clean up ttf files in directory: $GMS_FONTS_DIR"
+#     else
+#         log "INFO: Successfully cleaned up ttf files in directory: $GMS_FONTS_DIR"
+#     fi
+# else
+#     log "INFO: Directory not found: $GMS_FONTS_DIR"
+# fi
 
-log "Service completed."
+log "INFO: Service completed."
 log "================================================"
