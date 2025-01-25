@@ -109,17 +109,6 @@ A: Yes, but conflicts may arise if another module modifies the system font. Disa
 ## Troubleshooting
 If the emoji files are replaced, reboot your phone.
 
-## To-Do List
-- ~~Add Magisk 27005+ Support~~ (added in [b8339eb](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b8339eb2a38d0876d2c8d640329e517816ced6ce), thanks to [E85Addict](https://github.com/E85Addict)).
-- ~~Fix compatibility issues with KernelSU~~ (check [references](https://kernelsu.org/guide/difference-with-magisk.html)).
-- ~~Add OverlayFS Support~~ (added in [b9e6e0f](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/b9e6e0f374759c70dccd78c8791e4bb9d37b75a9), thanks to [reddxae](https://github.com/reddxae)).
-- ~~Moved away from `install.sh` based on [Magisk Docs](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md) and switched to `customize.sh`~~ (added in [bc52d16](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/bc52d16186e6d53398f7b7c552c4251fd5e15a4b)).
-- ~~Update META-INF~~ (see [3e9dd3b](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/3e9dd3ba0d13f43f70bf299d4c727ffe3152c6b6)).
-- ~~Streamlined the code~~ (see [16ef755](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/16ef7553211f7de5e5f1791f6609c92de4c6c7de)).
-- ~~Look into adding a `service.sh` or maybe an `action.sh` to fix [Issue #31](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/31)~~ (see [e7ae407](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/e7ae4077bf17e2b9e2c28b6aac75db1f7be11003)).
-- ~~Look into GMS Font providers~~ (see the [following](https://github.com/Keinta15/Magisk-iOS-Emoji/blob/3263afb195ca0d8a6ed72e607131689fb0cd29e0/service.sh#L131C1-L152C3)).
-- ~~Look into [Issue #18](https://github.com/Keinta15/Magisk-iOS-Emoji/issues/18) for Nothing phones~~.
-
 ## Contributing
 Contributions are welcome! If you'd like to contribute, please:
 1. Fork the repository.
