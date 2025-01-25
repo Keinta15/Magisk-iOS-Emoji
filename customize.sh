@@ -90,21 +90,26 @@ replace_emojis() {
 # Function to clear app cache
 clear_cache() {
     local app_name="$1"
-    if [ -d "/data/data/$app_name" ]; then
-        find /data -type d -path "*$app_name*/*cache*" -exec rm -rf {} +
-        am force-stop "$app_name"
-        ui_print "- Cleared cache for $app_name"
-    else
-        ui_print "- $app_name cache not found, skipping"
+    local app_display_name=$(display_name "$app_name")
+	
+    # Check if app exists
+    if ! package_installed "$app_name"; then
+        ui_print "- Skipping: $app_display_name (not installed)"
+        return 0
     fi
-}
+	
+	ui_print "- Cleaning cache: $app_display_name"
+	
+    for subpath in /cache /code_cache /app_webview /files/GCache; do
+        target_dir="/data/data/${app_name}${subpath}"
+        if [ -d "$target_dir" ]; then
+            rm -rf "$target_dir"
+        fi
+    done
 
-  
-# Extract module files
-ui_print "- Extracting module files"
-unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
-    ui_print "- Failed to extract module files"
-    exit 1
+    # Force-stop
+    am force-stop "$app_name"
+    ui_print "- Cache cleared: $app_display_name"
 }
 
 
