@@ -75,8 +75,8 @@ replace_emojis() {
     local app_name="$1"
     local app_dir="$2"
     local emoji_dir="$3"
-  local target_filename="$4"
-  local app_display_name=$(display_name "$app_name")
+    local target_filename="$4"
+    local app_display_name=$(display_name "$app_name")
     
     if package_installed "$app_name"; then
         ui_print "- Detected: $app_display_name"
