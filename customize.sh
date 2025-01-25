@@ -112,6 +112,11 @@ clear_cache() {
     ui_print "- Cache cleared: $app_display_name"
 }
 
+# Extract module files
+unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
+    ui_print "- Failed to extract module files"
+    exit 1
+}
 
 # Replace system emoji fonts
 ui_print "- Installing Emojis"
@@ -139,14 +144,20 @@ else
 fi
 
 # Replace Facebook and Messenger emojis
-replace_emojis "com.facebook.orca" "$MSG_DIR" "$FB_EMOJI_DIR"
-replace_emojis "com.facebook.katana" "$FB_DIR" "$FB_EMOJI_DIR"
+replace_emojis "com.facebook.orca" "/data/data/com.facebook.orca" "app_ras_blobs" "FacebookEmoji.ttf"
+clear_cache "com.facebook.orca"
+replace_emojis "com.facebook.katana" "/data/data/com.facebook.katana" "app_ras_blobs" "FacebookEmoji.ttf"
+clear_cache "com.facebook.katana"
+
+# Replace Lite app emojis
+replace_emojis "com.facebook.lite" "/data/data/com.facebook.lite" "files" "emoji_font.ttf"
+clear_cache "com.facebook.lite"
+replace_emojis "com.facebook.mlite" "/data/data/com.facebook.mlite" "files" "emoji_font.ttf"
+clear_cache "com.facebook.mlite"
   
 # Clear Gboard cache if installed
-if package_installed "com.google.android.inputmethod.latin"; then
-    ui_print "- Clearing Gboard Cache"
-    clear_cache "com.google.android.inputmethod.latin"
-fi
+ui_print "- Clearing Gboard Cache"
+clear_cache "com.google.android.inputmethod.latin"
   
 # Remove /data/fonts directory for Android 12+ instead of replacing the files (removing the need to run the troubleshooting step, thanks @reddxae)
 if [ -d "/data/fonts" ]; then
