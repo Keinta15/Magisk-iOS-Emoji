@@ -1,5 +1,19 @@
 
 ## Changelog
+v17.4.7
+- **Facebook Lite/Messenger Lite Support**  
+  Added emoji replacement compatibility for:
+  - Facebook Lite (`com.facebook.lite`)
+  - Messenger Lite (`com.facebook.mlite`)
+- **`display_name()` function**
+  Added function to display app names instead of package name `com.facebook.katana`
+
+- **Case-Insensitive Font Detection**  
+  Modified `replace_emoji_fonts()` in `service.sh` to use:  
+  `find -iname "*emoji*.ttf"` instead of case-sensitive matching
+- **Cache Clearing Lag**  
+  Rewrote `clear_cache()` to eliminate delays caused by recursive `find` in `/data`  
+  *New implementation uses direct path targeting for faster cleanup*
 v17.4.6
 - Updated `META-INF` (see [3e9dd3b](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/3e9dd3ba0d13f43f70bf299d4c727ffe3152c6b6)).  
 - Restructured `customize.sh` code (see [16ef755](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/16ef7553211f7de5e5f1791f6609c92de4c6c7de)), making it easier to update.  
