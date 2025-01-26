@@ -5,8 +5,8 @@ v17.4.7
   Added emoji replacement compatibility for:
   - Facebook Lite (`com.facebook.lite`)
   - Messenger Lite (`com.facebook.mlite`)
-- **`display_name()` function**
-  Added function to display app names instead of package name `com.facebook.katana`
+- **`display_name()` function**  
+ Added function to display app names instead of package name `com.facebook.katana`
 
 - **Case-Insensitive Font Detection**  
   Modified `replace_emoji_fonts()` in `service.sh` to use:  
