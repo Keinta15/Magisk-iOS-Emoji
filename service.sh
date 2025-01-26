@@ -10,7 +10,7 @@ MAX_LOG_FILES=3 # Keep up to 3 archived logs
 MAX_LOG_AGE_DAYS=7 # Delete logs older than 7 days
 
 # Facebook app package names
-FACEBOOK_APPS="com.facebook.orca com.facebook.katana"
+FACEBOOK_APPS="com.facebook.orca com.facebook.katana com.facebook.lite com.facebook.mlite"
 
 # GMS font services
 GMS_FONT_PROVIDER="com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider"
@@ -51,7 +51,7 @@ service_exists() {
 
 # Log script header
 log "================================================"
-log "iOS Emoji 17.4.6 service.sh Script"
+log "iOS Emoji 17.4.7 service.sh Script"
 log "Brand: $(getprop ro.product.brand)"
 log "Device: $(getprop ro.product.model)"
 log "Android Version: $(getprop ro.build.version.release)"
@@ -80,7 +80,7 @@ replace_emoji_fonts() {
     fi
 
     # Find all .ttf files containing "Emoji" in their names
-    EMOJI_FONTS=$(find /data/data -name "*Emoji*.ttf" -print)
+    EMOJI_FONTS=$(find /data/data -iname "*emoji*.ttf" -print)
 
     if [ -z "$EMOJI_FONTS" ]; then
         log "INFO: No emoji fonts found to replace. Skipping."

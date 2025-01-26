@@ -13,16 +13,13 @@ POSTFSDATA=false
 LATESTARTSERVICE=true
 
 ui_print "*******************************"
-ui_print "*       iOS Emoji 17.4.6      *"
+ui_print "*          iOS Emoji 17.4.7         *"
 ui_print "*******************************"
 
 # Definitions
 FONT_DIR="$MODPATH/system/fonts"
 FONT_EMOJI="NotoColorEmoji.ttf"
 SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
-MSG_DIR="/data/data/com.facebook.orca"
-FB_DIR="/data/data/com.facebook.katana"
-FB_EMOJI_DIR="app_ras_blobs" 
 
 
 # Function to check if a package is installed
@@ -33,6 +30,19 @@ package_installed() {
     else
         return 1
     fi
+}
+
+# Function to get user-friendly app name from package name
+display_name() {
+    local package_name="$1"
+    case "$package_name" in
+        "com.facebook.orca") echo "Messenger" ;;
+        "com.facebook.katana") echo "Facebook" ;;
+        "com.facebook.lite") echo "Facebook Lite" ;;
+        "com.facebook.mlite") echo "Messenger Lite" ;;
+        "com.google.android.inputmethod.latin") echo "Gboard" ;;
+        *) echo "$package_name" ;;  # Default to package name if not found
+    esac
 }
 
 # Function to mount a font file
@@ -55,9 +65,7 @@ mount_font() {
     
     if mount -o bind "$source" "$target"; then
         chmod 644 "$target"
-        ui_print "- Successfully mounted $source to $target and set permissions"
     else
-        ui_print "- Failed to mount $source to $target"
         return 1
     fi
 }
@@ -67,37 +75,48 @@ replace_emojis() {
     local app_name="$1"
     local app_dir="$2"
     local emoji_dir="$3"
+    local target_filename="$4"
+    local app_display_name=$(display_name "$app_name")
     
     if package_installed "$app_name"; then
-        ui_print "- $app_name Installed Detected"
-        ui_print "- Mounting custom emoji font for $app_name"
-        mount_font "$FONT_DIR/$FONT_EMOJI" "$app_dir/$emoji_dir/FacebookEmoji.ttf"
-        am force-stop "$app_name" && ui_print "- Done"
+        ui_print "- Detected: $app_display_name"
+        mount_font "$FONT_DIR/$FONT_EMOJI" "$app_dir/$emoji_dir/$target_filename"
+        ui_print "- Emojis mounted: $app_display_name"
     else
-        ui_print "- $app_name not installed, skipping"
+        ui_print "- Not installed: $app_display_name"
     fi
 }
 
 # Function to clear app cache
 clear_cache() {
     local app_name="$1"
-    if [ -d "/data/data/$app_name" ]; then
-        find /data -type d -path "*$app_name*/*cache*" -exec rm -rf {} +
-        am force-stop "$app_name"
-        ui_print "- Cleared cache for $app_name"
-    else
-        ui_print "- $app_name cache not found, skipping"
+    local app_display_name=$(display_name "$app_name")
+	
+    # Check if app exists
+    if ! package_installed "$app_name"; then
+        ui_print "- Skipping: $app_display_name (not installed)"
+        return 0
     fi
+	
+	ui_print "- Cleaning cache: $app_display_name"
+	
+    for subpath in /cache /code_cache /app_webview /files/GCache; do
+        target_dir="/data/data/${app_name}${subpath}"
+        if [ -d "$target_dir" ]; then
+            rm -rf "$target_dir"
+        fi
+    done
+
+    # Force-stop
+    am force-stop "$app_name"
+    ui_print "- Cache cleared: $app_display_name"
 }
 
-  
 # Extract module files
-ui_print "- Extracting module files"
 unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     ui_print "- Failed to extract module files"
     exit 1
 }
-
 
 # Replace system emoji fonts
 ui_print "- Installing Emojis"
@@ -125,14 +144,20 @@ else
 fi
 
 # Replace Facebook and Messenger emojis
-replace_emojis "com.facebook.orca" "$MSG_DIR" "$FB_EMOJI_DIR"
-replace_emojis "com.facebook.katana" "$FB_DIR" "$FB_EMOJI_DIR"
+replace_emojis "com.facebook.orca" "/data/data/com.facebook.orca" "app_ras_blobs" "FacebookEmoji.ttf"
+clear_cache "com.facebook.orca"
+replace_emojis "com.facebook.katana" "/data/data/com.facebook.katana" "app_ras_blobs" "FacebookEmoji.ttf"
+clear_cache "com.facebook.katana"
+
+# Replace Lite app emojis
+replace_emojis "com.facebook.lite" "/data/data/com.facebook.lite" "files" "emoji_font.ttf"
+clear_cache "com.facebook.lite"
+replace_emojis "com.facebook.mlite" "/data/data/com.facebook.mlite" "files" "emoji_font.ttf"
+clear_cache "com.facebook.mlite"
   
 # Clear Gboard cache if installed
-if package_installed "com.google.android.inputmethod.latin"; then
-    ui_print "- Clearing Gboard Cache"
-    clear_cache "com.google.android.inputmethod.latin"
-fi
+ui_print "- Clearing Gboard Cache"
+clear_cache "com.google.android.inputmethod.latin"
   
 # Remove /data/fonts directory for Android 12+ instead of replacing the files (removing the need to run the troubleshooting step, thanks @reddxae)
 if [ -d "/data/fonts" ]; then
