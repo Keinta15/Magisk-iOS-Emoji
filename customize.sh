@@ -32,7 +32,7 @@ package_installed() {
     fi
 }
 
-# Function to get user-friendly app name from package name
+# Function to set user-friendly app name for package name, otherwise fallback to package name
 display_name() {
     local package_name="$1"
     case "$package_name" in
