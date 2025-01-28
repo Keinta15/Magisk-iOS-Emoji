@@ -53,11 +53,13 @@ service_exists() {
     return $?
 }
 
+
+# Log script header
 log "================================================"
-log "INFO: iOS Emoji 17.4.7 service.sh Script"
-log "INFO: Brand: $(getprop ro.product.brand)"
-log "INFO: Device: $(getprop ro.product.model)"
-log "INFO: Android Version: $(getprop ro.build.version.release)"
+log "iOS Emoji 17.4.7 service.sh Script"
+log "Brand: $(getprop ro.product.brand)"
+log "Device: $(getprop ro.product.model)"
+log "Android Version: $(getprop ro.build.version.release)"
 log "================================================"
 
 # Wait until the device has completed booting
@@ -99,14 +101,14 @@ replace_emoji_fonts() {
         fi
 
         log "INFO: Replacing emoji font: $font"
-        if ! cp "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$font" >/dev/null 2>&1; then
+        if ! cp "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$font"; then
             log "ERROR: Failed to replace emoji font: $font"
         else
             log "INFO: Successfully replaced emoji font: $font"
         fi
 
         # Set permissions for the replaced file
-        if ! chmod 644 "$font" >/dev/null 2>&1; then
+        if ! chmod 644 "$font"; then
             log "ERROR: Failed to set permissions for: $font"
         else
             log "INFO: Successfully set permissions for: $font"
@@ -121,8 +123,10 @@ replace_emoji_fonts
 # Force-stop Facebook apps after all replacements are done
 log "INFO: Force-stopping apps..."
 for app in $FACEBOOK_APPS; do
-    if ! am force-stop "$app" >/dev/null 2>&1; then
+    if ! am force-stop "$app"; then
         log "ERROR: Failed to force-stop app: $app"
+    else
+        log "INFO: Successfully force-stopped app: $app"
     fi
 done
 
@@ -132,7 +136,7 @@ sleep 2
 # Disable GMS font services if they exist
 if service_exists "$GMS_FONT_PROVIDER"; then
     log "INFO: Disabling GMS font provider: $GMS_FONT_PROVIDER"
-    if ! pm disable "$GMS_FONT_PROVIDER" >/dev/null 2>&1; then
+    if ! pm disable "$GMS_FONT_PROVIDER"; then
         log "ERROR: Failed to disable GMS font provider: $GMS_FONT_PROVIDER"
     else
         log "INFO: Successfully disabled GMS font provider: $GMS_FONT_PROVIDER"
@@ -143,7 +147,7 @@ fi
 
 if service_exists "$GMS_FONT_UPDATER"; then
     log "INFO: Disabling GMS font updater: $GMS_FONT_UPDATER"
-    if ! pm disable "$GMS_FONT_UPDATER" >/dev/null 2>&1; then
+    if ! pm disable "$GMS_FONT_UPDATER"; then
         log "ERROR: Failed to disable GMS font updater: $GMS_FONT_UPDATER"
     else
         log "INFO: Successfully disabled GMS font updater: $GMS_FONT_UPDATER"
@@ -155,7 +159,7 @@ fi
 # Clean up leftover font files
 log "INFO: Cleaning up leftover font files..."
 if [ -d "$DATA_FONTS_DIR" ]; then
-    if ! rm -rf "$DATA_FONTS_DIR" >/dev/null 2>&1; then
+    if ! rm -rf "$DATA_FONTS_DIR"; then
         log "ERROR: Failed to clean up directory: $DATA_FONTS_DIR"
     else
         log "INFO: Successfully cleaned up directory: $DATA_FONTS_DIR"
@@ -163,6 +167,17 @@ if [ -d "$DATA_FONTS_DIR" ]; then
 else
     log "INFO: Directory not found: $DATA_FONTS_DIR"
 fi
+
+# Commented out the deletion of .ttf files in the opentype directory (still need testing)
+# if [ -d "$GMS_FONTS_DIR" ]; then
+#     if ! rm -rf "$GMS_FONTS_DIR"/*ttf; then
+#         log "ERROR: Failed to clean up ttf files in directory: $GMS_FONTS_DIR"
+#     else
+#         log "INFO: Successfully cleaned up ttf files in directory: $GMS_FONTS_DIR"
+#     fi
+# else
+#     log "INFO: Directory not found: $GMS_FONTS_DIR"
+# fi
 
 log "INFO: Service completed."
 log "================================================"
