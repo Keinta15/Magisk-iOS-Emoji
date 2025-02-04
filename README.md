@@ -8,8 +8,6 @@ Systemlessly replaces the emoji font with iOS Emoji.
 > [!TIP]
 > Contributions are welcome! If you'd like to help improve this module, feel free to submit a pull request. Check out the [Contributing](#contributing) section for more details.
 
----
-
 #### ⚠️ Note
 I'm currently working on updating the .ttf file with new emojis—I just need to further test the Unicode. Bear with me while I do this in my spare time.
 
