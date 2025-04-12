@@ -26,6 +26,9 @@ Systemlessly replaces the emoji font with iOS Emoji.
 *Example of iOS emojis displayed on an Android device.*
 
 ## Changelog
+### v18.0
+- Added 18.0 Emojis.
+
 ### v17.4.7
 - **Facebook Lite/Messenger Lite Support**  
   Added emoji replacement compatibility for:

@@ -1,7 +1,7 @@
 id=iOS_Emoji
-name=iOS 17.4 Emoji font
-version=v17.4.7
-versionCode=17407
+name=iOS 18.0 Emoji font
+version=v18.0
+versionCode=18000
 author=Keinta15
-description=Systemlessly replaces emoji font with iOS 17.4 Emoji
+description=Systemlessly replaces emoji font with iOS 18.0 Emoji
 updateJson=https://raw.githubusercontent.com/Keinta15/Magisk-iOS-Emoji/main/updater.json

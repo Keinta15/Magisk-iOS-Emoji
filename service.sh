@@ -56,7 +56,7 @@ service_exists() {
 
 # Log script header
 log "================================================"
-log "iOS Emoji 17.4.7 service.sh Script"
+log "iOS Emoji 18.0 service.sh Script"
 log "Brand: $(getprop ro.product.brand)"
 log "Device: $(getprop ro.product.model)"
 log "Android Version: $(getprop ro.build.version.release)"
