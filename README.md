@@ -26,6 +26,9 @@ Systemlessly replaces the emoji font with iOS Emoji.
 *Example of iOS emojis displayed on an Android device.*
 
 ## Changelog
+### v18.4
+- Added 18.4 Emojis ([Unicode 16.0](https://emojipedia.org/unicode-16.0)). Thanks to [samuelngs/apple-emoji-linux](https://github.com/samuelngs/apple-emoji-linux) for the source.
+
 ### v17.4.7
 - **Facebook Lite/Messenger Lite Support**  
   Added emoji replacement compatibility for:
@@ -120,6 +123,7 @@ A: Yes, but conflicts may arise if another module modifies the system font. Disa
 - OnePlus 11 (Android 14)
 - OnePlus 8T (Android 13)
 - OnePlus 6
+- Pixel 7 Pro (Android 15, 16)
 - [Reported working by users](https://github.com/Keinta15/Magisk-iOS-Emoji/issues?q=is%3Aissue+is%3Aclosed+label%3A%22reported+working%22)
 
 ## Troubleshooting
