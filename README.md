@@ -28,6 +28,8 @@ Systemlessly replaces the emoji font with iOS Emoji.
 ## Changelog
 ### v18.4
 - Added 18.4 Emojis ([Unicode 16.0](https://emojipedia.org/unicode-16.0)). Thanks to [samuelngs/apple-emoji-linux](https://github.com/samuelngs/apple-emoji-linux) for the source.
+- Added action.sh for user convenience
+- Updated log function to display messages properly when running the action
 
 ### v17.4.7
 - **Facebook Lite/Messenger Lite Support**  
