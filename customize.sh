@@ -115,7 +115,7 @@ clear_cache() {
 # Extract module files
 unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     ui_print "- Failed to extract module files"
-    exit 1
+    abort "- Installation failed: extraction error"
 }
 
 # Replace system emoji fonts
