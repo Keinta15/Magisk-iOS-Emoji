@@ -123,7 +123,7 @@ A: Yes, the module replaces the system emoji font, so it should work with any ke
 A: Yes, but conflicts may arise if another module modifies the system font. Disable conflicting modules if issues occur.
 
 ## Tested On
-- OnePlus 13 (Android 15)
+- OnePlus 13 (Android 15, 16)
 - OnePlus 11 (Android 14, 15)
 - OnePlus 8T (Android 13)
 - OnePlus 6
