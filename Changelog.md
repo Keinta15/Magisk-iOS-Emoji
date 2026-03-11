@@ -4,6 +4,9 @@ v18.4
 - Added 18.4 Emojis ([Unicode 16.0](https://emojipedia.org/unicode-16.0)). Thanks to [samuelngs/apple-emoji-linux](https://github.com/samuelngs/apple-emoji-linux) for the source.
 - Added action.sh for user convenience
 - Updated log function to display messages properly when running the action
+- Fixed Messenger occasionally reverting to default emojis
+- Fixed a bug in service.sh that failed to properly disable the GMS font provider for all Google apps, preventing some apps from using the iOS emoji font
+- Better detection for Android 13+ storage isolation.
 
 v17.4.7
 - **Facebook Lite/Messenger Lite Support**  
@@ -19,7 +22,7 @@ v17.4.7
 - **Cache Clearing Lag**  
   Rewrote `clear_cache()` to eliminate delays caused by recursive `find` in `/data`  
   *New implementation uses direct path targeting for faster cleanup*
-
+  
 v17.4.6
 - Updated `META-INF` (see [3e9dd3b](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/3e9dd3ba0d13f43f70bf299d4c727ffe3152c6b6)).  
 - Restructured `customize.sh` code (see [16ef755](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/16ef7553211f7de5e5f1791f6609c92de4c6c7de)), making it easier to update.  
