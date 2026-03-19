@@ -15,10 +15,16 @@ FACEBOOK_APPS="com.facebook.orca com.facebook.katana com.facebook.lite com.faceb
 # GMS font services
 GMS_FONT_PROVIDER="com.google.android.gms/com.google.android.gms.fonts.provider.FontsProvider"
 GMS_FONT_UPDATER="com.google.android.gms/com.google.android.gms.fonts.update.UpdateSchedulerService"
+GMS_FONT_DIR_PATTERN="com.google.android.gms/files/fonts"
 
 # Paths for cleanup
 DATA_FONTS_DIR="/data/fonts"
 GMS_FONTS_DIR="/data/data/com.google.android.gms/files/fonts/opentype"
+GMS_FONT_DIR_PATTERN="com.google.android.gms/files/fonts"
+
+# Messenger font directories
+ORCA_FONT_DIR1="/data/data/com.facebook.orca/files/fonts"
+ORCA_FONT_DIR2="/data/user/0/com.facebook.orca/files/fonts"
 
 # Ensure the log directory exists
 mkdir -p "$MODPATH"
@@ -53,7 +59,6 @@ service_exists() {
     return $?
 }
 
-
 # Log script header
 log "================================================"
 log "iOS Emoji 18.4 service.sh Script"
@@ -85,7 +90,7 @@ replace_emoji_fonts() {
     fi
 
     # Find all .ttf files containing "Emoji" in their names
-    EMOJI_FONTS=$(find /data/data -iname "*emoji*.ttf" -print)
+    EMOJI_FONTS=$(find /data/data /data/user/0 -iname "*emoji*.ttf" 2>/dev/null)
 
     if [ -z "$EMOJI_FONTS" ]; then
         log "INFO: No emoji fonts found to replace. Skipping."
@@ -120,6 +125,76 @@ replace_emoji_fonts() {
 
 replace_emoji_fonts
 
+lock_messenger_emoji() {
+    log "INFO: Applying permanent Messenger/Facebook emoji lock..."
+
+    for pkg in $FACEBOOK_APPS; do
+        if [ ! -d "/data/data/$pkg" ]; then
+            log "INFO: Package not found, skipping lock: $pkg"
+            continue
+        fi
+
+        target="/data/data/$pkg/app_ras_blobs/FacebookEmoji.ttf"
+        mkdir -p "/data/data/$pkg/app_ras_blobs"
+
+        log "INFO: Locking emoji file for $pkg"
+
+        if ! cp -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$target"; then
+            log "ERROR: Failed to copy font to $target"
+            continue
+        fi
+
+        if ! chmod 444 "$target"; then
+            log "ERROR: Failed to set read-only permissions on $target"
+        else
+            log "INFO: Successfully set read-only permissions on $target"
+        fi
+
+        # Try to make the file truly immutable
+        if chattr +i "$target" 2>/dev/null; then
+            log "INFO: Successfully made file immutable (chattr +i): $target"
+        else
+            log "INFO: chattr +i not supported or failed (normal on some filesystems) - using read-only fallback"
+        fi
+    done
+
+    log "INFO: Permanent Messenger/Facebook emoji lock completed."
+}
+
+lock_messenger_emoji
+
+# Clean Messenger emoji caches
+log "INFO: Cleaning Messenger font caches..."
+
+for dir in "$ORCA_FONT_DIR1" "$ORCA_FONT_DIR2"; do
+    if [ -d "$dir" ]; then
+        if rm -rf "$dir"/*; then
+            log "INFO: Successfully cleaned Messenger font cache: $dir"
+        else
+            log "ERROR: Failed to clean Messenger font cache: $dir"
+        fi
+    else
+        log "INFO: Messenger font cache directory not found: $dir"
+    fi
+done
+
+# Block Messenger from downloading emoji fonts
+log "INFO: Blocking Messenger emoji font downloads..."
+
+for dir in "$ORCA_FONT_DIR1" "$ORCA_FONT_DIR2"; do
+    if mkdir -p "$dir"; then
+        log "INFO: Created directory: $dir"
+    else
+        log "ERROR: Failed to create directory: $dir"
+    fi
+
+    if chmod 000 "$dir"; then
+        log "INFO: Locked directory permissions: $dir"
+    else
+        log "ERROR: Failed to lock directory: $dir"
+    fi
+done
+
 # Force-stop Facebook apps after all replacements are done
 log "INFO: Force-stopping apps..."
 for app in $FACEBOOK_APPS; do
@@ -133,40 +208,48 @@ done
 # Add a delay to allow the system to process the changes
 sleep 2
 
-# Disable GMS font services if they exist
-if service_exists "$GMS_FONT_PROVIDER"; then
-    log "INFO: Disabling GMS font provider: $GMS_FONT_PROVIDER"
-    if ! pm disable "$GMS_FONT_PROVIDER"; then
-        log "ERROR: Failed to disable GMS font provider: $GMS_FONT_PROVIDER"
-    else
-        log "INFO: Successfully disabled GMS font provider: $GMS_FONT_PROVIDER"
-    fi
-else
-    log "INFO: GMS font provider not found: $GMS_FONT_PROVIDER"
-fi
+# Disable GMS font services for all users
+disable_gms_font_services() {
+    log "INFO: Disabling GMS font services for all users..."
 
-if service_exists "$GMS_FONT_UPDATER"; then
-    log "INFO: Disabling GMS font updater: $GMS_FONT_UPDATER"
-    if ! pm disable "$GMS_FONT_UPDATER"; then
-        log "ERROR: Failed to disable GMS font updater: $GMS_FONT_UPDATER"
-    else
-        log "INFO: Successfully disabled GMS font updater: $GMS_FONT_UPDATER"
-    fi
-else
-    log "INFO: GMS font updater not found: $GMS_FONT_UPDATER"
-fi
+    USERS=$(ls -d /data/user/* 2>/dev/null)
 
-# Clean up leftover font files
+    for userpath in $USERS; do
+
+        USERID=${userpath##*/}
+
+        if pm disable --user "$USERID" "$GMS_FONT_PROVIDER" >/dev/null 2>&1; then
+            log "INFO: Disabled GMS font provider for user $USERID"
+        fi
+
+        if pm disable --user "$USERID" "$GMS_FONT_UPDATER" >/dev/null 2>&1; then
+            log "INFO: Disabled GMS font updater for user $USERID"
+        fi
+
+    done
+}
+
+disable_gms_font_services
+
+# Remove GMS generated fonts
+cleanup_gms_fonts() {
 log "INFO: Cleaning up leftover font files..."
-if [ -d "$DATA_FONTS_DIR" ]; then
-    if ! rm -rf "$DATA_FONTS_DIR"; then
-        log "ERROR: Failed to clean up directory: $DATA_FONTS_DIR"
-    else
-        log "INFO: Successfully cleaned up directory: $DATA_FONTS_DIR"
+
+    if [ -d "$DATA_FONTS_DIR" ]; then
+        rm -rf "$DATA_FONTS_DIR"
+        log "INFO: Removed $DATA_FONTS_DIR"
     fi
-else
-    log "INFO: Directory not found: $DATA_FONTS_DIR"
-fi
+
+    find /data -type d -path "*$GMS_FONT_DIR_PATTERN*" 2>/dev/null | while read dir; do
+        if rm -rf "$dir"; then
+            log "INFO: Removed GMS font directory: $dir"
+        else
+            log "ERROR: Failed removing: $dir"
+        fi
+    done
+}
+
+cleanup_gms_fonts
 
 # Commented out the deletion of .ttf files in the opentype directory (still need testing)
 # if [ -d "$GMS_FONTS_DIR" ]; then
