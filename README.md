@@ -29,7 +29,7 @@ Systemlessly replaces the emoji font with iOS Emoji.
 ### v18.4.1
 - Fixed Messenger occasionally reverting to default emojis
 - Fixed a bug in service.sh that failed to properly disable the GMS font provider for all Google apps, preventing some apps from using the iOS emoji font
-- Better detection for Android 13+ storage isolation (all 3 see [f26a371](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/f26a371d9bf7042e10e1c84da380eaa1952bee09) thanks to [archieamas11](https://github.com/archieamas11)
+- Better detection for Android 13+ storage isolation (all 3 see [f26a371](https://github.com/Keinta15/Magisk-iOS-Emoji/commit/f26a371d9bf7042e10e1c84da380eaa1952bee09) thanks to [archieamas11](https://github.com/archieamas11))
 
 ### v18.4
 - Added 18.4 Emojis ([Unicode 16.0](https://emojipedia.org/unicode-16.0)). Thanks to [samuelngs/apple-emoji-linux](https://github.com/samuelngs/apple-emoji-linux) for the source.
