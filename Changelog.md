@@ -1,12 +1,14 @@
 
 ## Changelog
+v18.4.1
+- Fixed Messenger occasionally reverting to default emojis
+- Fixed a bug in service.sh that failed to properly disable the GMS font provider for all Google apps, preventing some apps from using the iOS emoji font
+- Better detection for Android 13+ storage isolation.
+
 v18.4
 - Added 18.4 Emojis ([Unicode 16.0](https://emojipedia.org/unicode-16.0)). Thanks to [samuelngs/apple-emoji-linux](https://github.com/samuelngs/apple-emoji-linux) for the source.
 - Added action.sh for user convenience
 - Updated log function to display messages properly when running the action
-- Fixed Messenger occasionally reverting to default emojis
-- Fixed a bug in service.sh that failed to properly disable the GMS font provider for all Google apps, preventing some apps from using the iOS emoji font
-- Better detection for Android 13+ storage isolation.
 
 v17.4.7
 - **Facebook Lite/Messenger Lite Support**  
