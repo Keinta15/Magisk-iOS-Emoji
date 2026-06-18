@@ -1,0 +1,77 @@
+name: Build and Release Magisk Module
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          lfs: true  # REQUIRED: pulls actual font binaries instead of LFS pointer stubs
+
+      - name: Verify LFS files
+        run: |
+          echo "=== LFS tracked files ==="
+          git lfs ls-files
+          echo "=== Font directory ==="
+          ls -lh system/fonts/ 2>/dev/null || echo "Warning: system/fonts/ is empty or missing"
+
+      - name: Package Magisk Module
+        run: |
+          if [ ! -f "module.prop" ]; then
+            echo "Error: module.prop not found!"
+            exit 1
+          fi
+
+          # Extract version robustly (handles \r\n and stray whitespace)
+          VERSION=$(grep '^version=' module.prop | cut -d= -f2 | tr -d '\r\n[:space:]')
+          echo "Module Version: $VERSION"
+
+          if [ -z "$VERSION" ]; then
+            echo "Error: Could not extract version from module.prop!"
+            exit 1
+          fi
+
+          ZIP_NAME="Magisk_iOS_Emoji_${VERSION}.zip"
+
+          # Zip everything except git metadata and non-module files
+          zip -r "${ZIP_NAME}" . \
+            -x ".git/*" \
+            -x ".git" \
+            -x ".github/*" \
+            -x ".github" \
+            -x ".gitattributes" \
+            -x ".gitconfig" \
+            -x "README.md" \
+            -x "Changelog.md" \
+            -x "iOS_Emoji_Screenshot.jpg"
+
+          echo "=== Created archive ==="
+          ls -lh "${ZIP_NAME}"
+          echo "ZIP_NAME=${ZIP_NAME}" >> "$GITHUB_ENV"
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: magisk-module
+          path: Magisk_iOS_Emoji_*.zip
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: Magisk_iOS_Emoji_*.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

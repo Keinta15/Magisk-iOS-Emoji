@@ -28,6 +28,7 @@ Systemlessly replaces the emoji font with iOS Emoji.
 ## Changelog
 ### v26.4
 - Added 26.4 Emojis ([Unicode 17.0](https://emojipedia.org/unicode-17.0)). Thanks to [mistu01/MFFMEmoji](https://github.com/mistu01/MFFMEmoji) for the [source](https://github.com/mistu01/MFFMEmoji/tree/mffmemoji-05052026-69d3924).
+- Added Action workflow for automatic zip building and release
 
 ### v18.4.1
 - Fixed Messenger occasionally reverting to default emojis
