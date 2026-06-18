@@ -1,6 +1,6 @@
 {
-  "version": "v0.1_FancyMoji_ALPHA",
-  "versionCode": 100,
+  "version": "v0.2_FancyMoji_ALPHA",
+  "versionCode": 200,
   "zipUrl": "https://github.com/newhertz/Magisk-iOS-Emoji/releases/download/v26.4/Magisk_iOS_Emoji_26.4.zip",
   "changelog": "https://raw.githubusercontent.com/newhertz/Magisk-iOS-Emoji/test/Changelog.md"
  }
