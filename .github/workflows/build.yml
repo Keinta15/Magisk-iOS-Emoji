@@ -41,7 +41,7 @@ jobs:
             exit 1
           fi
 
-          ZIP_NAME="Magisk_iOS_Emoji_${VERSION}.zip"
+          ZIP_NAME="FancyMoji_${VERSION}.zip"
 
           # Zip everything except git metadata and non-module files
           zip -r "${ZIP_NAME}" . \
@@ -63,13 +63,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: magisk-module
-          path: Magisk_iOS_Emoji_*.zip
+          path: FancyMoji_*.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Magisk_iOS_Emoji_*.zip
+          files: FancyMoji_*.zip
           draft: false
           prerelease: false
           generate_release_notes: true

@@ -1,7 +1,7 @@
-id=iOS_Emoji
-name=iOS 26.4 Emoji font
-version=v26.4
-versionCode=26400
+id=FancyMoji
+name=FancyMoji v0.1 ALPHA
+version=v0.1_ALPHA
+versionCode=100
 author=newhertz
-description=Systemlessly replaces emoji font with iOS 26.4 Emoji
-updateJson=https://raw.githubusercontent.com/newhertz/Magisk-iOS-Emoji/main/updater.json
+description=Systemlessly replaces default font with choosen emoji file.
+updateJson=https://raw.githubusercontent.com/newhertz/Magisk-iOS-Emoji/test/updater.json

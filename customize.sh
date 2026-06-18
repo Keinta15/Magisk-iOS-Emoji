@@ -12,15 +12,19 @@ PROPFILE=false
 POSTFSDATA=false
 LATESTARTSERVICE=true
 
-ui_print "*******************************"
-ui_print "*          iOS Emoji 26.4           *"
-ui_print "*******************************"
+ui_print "********************************"
+ui_print "*      FancyMoji Installer     *"
+ui_print "********************************"
 
 # Definitions
 FONT_DIR="$MODPATH/system/fonts"
 FONT_EMOJI="NotoColorEmoji.ttf"
-SYSTEM_FONT_FILE="/system/fonts/NotoColorEmoji.ttf"
-
+EMOJI_ANDROID="NotoColorEmoji.ttf"
+EMOJI_IOS="AppleColorEmoji.ttf"
+EMOJI_ONEUI="OneUiColorEmoji.ttf"
+EMOJI_CUSTOM=$(ls /sdcard/Fancymoji/*.ttf 2>/dev/null | head -n 1)
+SELECTED_FONT="$FONT_EMOJI" # fallback to Noto for stock Android
+DETECTED_FONT=""
 
 # Function to check if a package is installed
 package_installed() {
@@ -36,12 +40,12 @@ package_installed() {
 display_name() {
     local package_name="$1"
     case "$package_name" in
-        "com.facebook.orca") echo "Messenger" ;;
-        "com.facebook.katana") echo "Facebook" ;;
-        "com.facebook.lite") echo "Facebook Lite" ;;
-        "com.facebook.mlite") echo "Messenger Lite" ;;
-        "com.google.android.inputmethod.latin") echo "Gboard" ;;
-        *) echo "$package_name" ;;  # Default to package name if not found
+    "com.facebook.orca") echo "Messenger" ;;
+    "com.facebook.katana") echo "Facebook" ;;
+    "com.facebook.lite") echo "Facebook Lite" ;;
+    "com.facebook.mlite") echo "Messenger Lite" ;;
+    "com.google.android.inputmethod.latin") echo "Gboard" ;;
+    *) echo "$package_name" ;; # Default to package name if not found
     esac
 }
 
@@ -49,20 +53,20 @@ display_name() {
 mount_font() {
     local source="$1"
     local target="$2"
-    
+
     if [ ! -f "$source" ]; then
         ui_print "- Source file $source does not exist"
         return 1
     fi
-    
+
     local target_dir=$(dirname "$target")
     if [ ! -d "$target_dir" ]; then
         ui_print "- Target directory $target_dir does not exist"
         return 1
-    fi 
-    
+    fi
+
     mkdir -p "$(dirname "$target")"
-    
+
     if mount -o bind "$source" "$target"; then
         chmod 644 "$target"
     else
@@ -77,10 +81,10 @@ replace_emojis() {
     local emoji_dir="$3"
     local target_filename="$4"
     local app_display_name=$(display_name "$app_name")
-    
+
     if package_installed "$app_name"; then
         ui_print "- Detected: $app_display_name"
-        mount_font "$FONT_DIR/$FONT_EMOJI" "$app_dir/$emoji_dir/$target_filename"
+        mount_font "$FONT_DIR/$SELECTED_FONT" "$app_dir/$emoji_dir/$target_filename"
         ui_print "- Emojis mounted: $app_display_name"
     else
         ui_print "- Not installed: $app_display_name"
@@ -91,15 +95,15 @@ replace_emojis() {
 clear_cache() {
     local app_name="$1"
     local app_display_name=$(display_name "$app_name")
-	
+
     # Check if app exists
     if ! package_installed "$app_name"; then
         ui_print "- Skipping: $app_display_name (not installed)"
         return 0
     fi
-	
-	ui_print "- Cleaning cache: $app_display_name"
-	
+
+    ui_print "- Cleaning cache: $app_display_name"
+
     for subpath in /cache /code_cache /app_webview /files/GCache; do
         target_dir="/data/data/${app_name}${subpath}"
         if [ -d "$target_dir" ]; then
@@ -112,6 +116,29 @@ clear_cache() {
     ui_print "- Cache cleared: $app_display_name"
 }
 
+#Function to select font to install
+select_option() {
+    local options=("$@")
+    local count=${#options[@]}
+    local idx=0
+
+    ui_print "  [ VOL+ = next   |   VOL- = confirm ]"
+
+    while true; do
+        # Show the currently highlighted option
+        ui_print "  >> ${options[$idx]}"
+
+        if chooseport; then
+            # VOL+ pressed — advance index, wrap around if at the end
+            idx=$(((idx + 1) % count))
+        else
+            # VOL- pressed — lock in the current option
+            RESULT="${options[$idx]}"
+            return $idx # return value = index, useful if you need it
+        fi
+    done
+}
+
 # Extract module files
 unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
     ui_print "- Failed to extract module files"
@@ -119,22 +146,44 @@ unzip -o "$ZIPFILE" 'system/*' -d "$MODPATH" >&2 || {
 }
 
 # Replace system emoji fonts
-ui_print "- Installing Emojis"
+ui_print "- Starting to replace system files"
 variants="SamsungColorEmoji.ttf LGNotoColorEmoji.ttf HTC_ColorEmoji.ttf AndroidEmoji-htc.ttf ColorUniEmoji.ttf DcmColorEmoji.ttf CombinedColorEmoji.ttf NotoColorEmojiLegacy.ttf"
+
+ui_print " "
+select_option "Android Emojis" "iOS Emojis" "OneUI Emojis" "Custom Emojis"
+
+if [ "$RESULT" = "Custom Emojis" ]; then
+    if [ -n "$EMOJI_CUSTOM" ] && [ -f "$EMOJI_CUSTOM" ]; then
+        cp "$EMOJI_CUSTOM" "$FONT_DIR/"
+        SELECTED_FONT=$(basename "$EMOJI_CUSTOM")
+    else
+        ui_print '- ERROR: No TTF found in /sdcard/Fancymoji/'
+        exit 1
+    fi
+fi
+
+case "$RESULT" in
+"Android Emojis") SELECTED_FONT="$EMOJI_ANDROID" ;;
+"iOS Emojis") SELECTED_FONT="$EMOJI_IOS" ;;
+"OneUI Emojis") SELECTED_FONT="$EMOJI_ONEUI" ;;
+esac
 
 for font in $variants; do
     if [ -f "/system/fonts/$font" ]; then
-        if cp "$FONT_DIR/$FONT_EMOJI" "$FONT_DIR/$font"; then
+        [ -z "$DETECTED_FONT" ] && DETECTED_FONT="/system/fonts/$font" # grab first match
+        if cp "$FONT_DIR/$SELECTED_FONT" "$FONT_DIR/$font"; then
             ui_print "- Replaced $font"
         else
             ui_print "- Failed to replace $font"
         fi
     fi
 done
-  
+
+SYSTEM_FONT_FILE="${DETECTED_FONT:-/system/fonts/NotoColorEmoji.ttf}"
+
 # Mount system emoji font
-if [ -f "$FONT_DIR/$FONT_EMOJI" ]; then
-    if mount_font "$FONT_DIR/$FONT_EMOJI" "$SYSTEM_FONT_FILE"; then
+if [ -f "$FONT_DIR/$SELECTED_FONT" ]; then
+    if mount_font "$FONT_DIR/$SELECTED_FONT" "$SYSTEM_FONT_FILE"; then
         ui_print "- System font mounted successfully"
     else
         ui_print "- Failed to mount system font"
@@ -154,11 +203,11 @@ replace_emojis "com.facebook.lite" "/data/data/com.facebook.lite" "files" "emoji
 clear_cache "com.facebook.lite"
 replace_emojis "com.facebook.mlite" "/data/data/com.facebook.mlite" "files" "emoji_font.ttf"
 clear_cache "com.facebook.mlite"
-  
+
 # Clear Gboard cache if installed
 ui_print "- Clearing Gboard Cache"
 clear_cache "com.google.android.inputmethod.latin"
-  
+
 # Remove /data/fonts directory for Android 12+ instead of replacing the files (removing the need to run the troubleshooting step, thanks @reddxae)
 if [ -d "/data/fonts" ]; then
     rm -rf "/data/fonts"
@@ -166,7 +215,7 @@ if [ -d "/data/fonts" ]; then
 fi
 
 # Handle fonts.xml symlinks
-[[ -d /sbin/.core/mirror ]] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
+[ -d /sbin/.core/mirror ] && MIRRORPATH=/sbin/.core/mirror || unset MIRRORPATH
 FONTS=/system/etc/fonts.xml
 FONTFILES=$(sed -ne '/<family lang="und-Zsye".*>/,/<\/family>/ {s/.*<font weight="400" style="normal">\(.*\)<\/font>.*/\1/p;}' "$MIRRORPATH$FONTS")
 for font in $FONTFILES; do
@@ -181,14 +230,14 @@ ui_print "- Custom emojis installed successfully!"
 ui_print "- Reboot your device to apply changes."
 ui_print "- Enjoy your new emojis! :)"
 
-# OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs 
+# OverlayFS Support based on https://github.com/HuskyDG/magic_overlayfs
 OVERLAY_IMAGE_EXTRA=0
 OVERLAY_IMAGE_SHRINK=true
 
 # Only use OverlayFS if Magisk_OverlayFS is installed
-if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] && \
+if [ -f "/data/adb/modules/magisk_overlayfs/util_functions.sh" ] &&
     /data/adb/modules/magisk_overlayfs/overlayfs_system --test; then
-  ui_print "- Add support for overlayfs"
-  . /data/adb/modules/magisk_overlayfs/util_functions.sh
-  support_overlayfs && rm -rf "$MODPATH"/system
+    ui_print "- Add support for overlayfs"
+    . /data/adb/modules/magisk_overlayfs/util_functions.sh
+    support_overlayfs && rm -rf "$MODPATH"/system
 fi
