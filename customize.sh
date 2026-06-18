@@ -116,6 +116,13 @@ clear_cache() {
     ui_print "- Cache cleared: $app_display_name"
 }
 
+chooseport() {
+    while true; do
+        getevent -lc 1 2>/dev/null | grep -q "KEY_VOLUMEUP"   && return 0
+        getevent -lc 1 2>/dev/null | grep -q "KEY_VOLUMEDOWN" && return 1
+    done
+}
+
 #Function to select font to install
 select_option() {
     local count=$#
