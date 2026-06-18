@@ -114,6 +114,7 @@ Systemlessly replaces the emoji font with iOS Emoji.
 </details>
 
 ## Changelog for Emojis
+- [26.4 New Emojis](https://blog.emojipedia.org/apple-ios-26-4-emoji-changelog/)
 - [18.4 New Emojis](https://blog.emojipedia.org/apple-ios-18-4-emoji-changelog/)
 - [17.4 New Emojis](https://blog.emojipedia.org/ios-17-4-emoji-changelog/)
 - [16.4 New Emojis](https://blog.emojipedia.org/ios-16-4-emoji-changelog/)
