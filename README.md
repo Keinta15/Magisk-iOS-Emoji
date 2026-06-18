@@ -1,16 +1,16 @@
 # Magisk-iOS-Emoji
 Systemlessly replaces the emoji font with iOS Emoji.
 
-[![Stars](https://img.shields.io/github/stars/Keinta15/Magisk-iOS-Emoji?label=Stars&color=blue)](https://github.com/Keinta15/Magisk-iOS-Emoji)
-[![Release](https://img.shields.io/github/v/release/Keinta15/Magisk-iOS-Emoji?label=Release&logo=github)](https://github.com/Keinta15/Magisk-iOS-Emoji/releases/latest)
-[![Download](https://img.shields.io/github/downloads/Keinta15/Magisk-iOS-Emoji/total?label=Downloads&logo=github)](https://github.com/Keinta15/Magisk-iOS-Emoji/releases/)
+[![Stars](https://img.shields.io/github/stars/newhertz/magisk-ios-emoji?label=Stars&color=blue)](https://github.com/newhertz/magisk-ios-emoji)
+[![Release](https://img.shields.io/github/v/release/newhertz/magisk-ios-emoji?label=Release&logo=github)](https://github.com/newhertz/magisk-ios-emoji/releases/latest)
+[![Download](https://img.shields.io/github/downloads/newhertz/magisk-ios-emoji/total?label=Downloads&logo=github)](https://github.com/newhertz/magisk-ios-emoji/releases/)
 
 > [!TIP]
 > Contributions are welcome! If you'd like to help improve this module, feel free to submit a pull request. Check out the [Contributing](#contributing) section for more details.
 
 
 ## Installation
-1. Download the latest release from the [Releases page](https://github.com/Keinta15/Magisk-iOS-Emoji/releases/latest).
+1. Download the latest release from the [Releases page](https://github.com/newhertz/magisk-ios-emoji/releases/latest).
 2. Open the Magisk app.
 3. Go to **Modules** → **Install from storage** and select the downloaded ZIP file.
 4. Reboot your device.
@@ -22,13 +22,13 @@ Systemlessly replaces the emoji font with iOS Emoji.
 - **Devices**: Works on most devices. Check the [Tested On](#tested-on) section for more details.
 
 ## Screenshot
-<img src="https://github.com/Keinta15/Magisk-iOS-Emoji/blob/main/iOS_Emoji_Screenshot.jpg" alt="iOS Emojis on Android" width="400" />  
+<img src="https://github.com/newhertz/magisk-ios-emoji/blob/main/iOS_Emoji_Screenshot.jpg" alt="iOS Emojis on Android" width="400" />  
 *Example of iOS emojis displayed on an Android device.*
 
 ## Changelog
 ### v26.4
 - Added 26.4 Emojis ([Unicode 17.0](https://emojipedia.org/unicode-17.0)). Thanks to [mistu01/MFFMEmoji](https://github.com/mistu01/MFFMEmoji) for the [source](https://github.com/mistu01/MFFMEmoji/tree/mffmemoji-05052026-69d3924).
-- Added Action workflow for automatic zip building and release
+
 
 ### v18.4.1
 - Fixed Messenger occasionally reverting to default emojis
