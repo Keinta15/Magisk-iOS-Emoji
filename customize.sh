@@ -118,23 +118,26 @@ clear_cache() {
 
 #Function to select font to install
 select_option() {
-    local options=("$@")
-    local count=${#options[@]}
+    local count=$#
     local idx=0
 
     ui_print "  [ VOL+ = next   |   VOL- = confirm ]"
 
     while true; do
-        # Show the currently highlighted option
-        ui_print "  >> ${options[$idx]}"
+        # Walk to current index using positional params
+        local i=0
+        for opt in "$@"; do
+            [ "$i" -eq "$idx" ] && break
+            i=$((i + 1))
+        done
+
+        ui_print "  >> $opt"
 
         if chooseport; then
-            # VOL+ pressed — advance index, wrap around if at the end
-            idx=$(((idx + 1) % count))
+            idx=$(( (idx + 1) % count ))
         else
-            # VOL- pressed — lock in the current option
-            RESULT="${options[$idx]}"
-            return $idx # return value = index, useful if you need it
+            RESULT="$opt"
+            return $idx
         fi
     done
 }
