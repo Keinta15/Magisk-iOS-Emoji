@@ -118,8 +118,14 @@ clear_cache() {
 
 chooseport() {
     while true; do
-        getevent -lc 1 2>/dev/null | grep -q "KEY_VOLUMEUP"   && return 0
-        getevent -lc 1 2>/dev/null | grep -q "KEY_VOLUMEDOWN" && return 1
+        local event=$(getevent -lc 1 2>/dev/null)
+        if echo "$event" | grep -q "KEY_VOLUMEUP"; then
+            sleep 0.4
+            return 0
+        elif echo "$event" | grep -q "KEY_VOLUMEDOWN"; then
+            sleep 0.4
+            return 1
+        fi
     done
 }
 
@@ -177,6 +183,8 @@ case "$RESULT" in
 "iOS Emojis") SELECTED_FONT="$EMOJI_IOS" ;;
 "OneUI Emojis") SELECTED_FONT="$EMOJI_ONEUI" ;;
 esac
+
+cp "$FONT_DIR/$SELECTED_FONT" "$FONT_DIR/$FONT_EMOJI"
 
 for font in $variants; do
     if [ -f "/system/fonts/$font" ]; then

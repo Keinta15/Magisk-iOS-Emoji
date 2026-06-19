@@ -1,7 +1,7 @@
 id=FancyMoji
-name=FancyMoji v0.2 ALPHA
-version=v0.2_ALPHA
-versionCode=200
+name=FancyMoji v0.4 ALPHA
+version=v0.4_ALPHA
+versionCode=400
 author=newhertz
 description=Systemlessly replaces default font with choosen emoji file.
 updateJson=https://raw.githubusercontent.com/newhertz/Magisk-iOS-Emoji/test/updater.json
