@@ -1,5 +1,8 @@
 
 ## Changelog
+Unreleased
+- Reduced the maximum embedded emoji bitmap size to 128px for improved compatibility with Samsung One UI and DeX.
+
 v26.4
 - Added 26.4 Emojis ([Unicode 17.0](https://emojipedia.org/unicode-17.0)) Thanks to [mistu01/MEEMEmoji](https://github.com/mistu01/MEEMEmoji) for the source.
 
