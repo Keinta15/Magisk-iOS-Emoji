@@ -99,6 +99,9 @@ replace_emoji_fonts() {
 
     # Replace each emoji font with the custom font
     for font in $EMOJI_FONTS; do
+        # Remove immutable flag (set by a previous run) so the file can be replaced
+        chattr -i "$font" 2>/dev/null
+
         # Check if the target font file is writable
         if [ ! -w "$font" ]; then
             log "ERROR: Font file is not writable: $font"
@@ -138,6 +141,9 @@ lock_messenger_emoji() {
         mkdir -p "/data/data/$pkg/app_ras_blobs"
 
         log "INFO: Locking emoji file for $pkg"
+
+        # Remove immutable flag (set by a previous run) so the file can be overwritten
+        chattr -i "$target" 2>/dev/null
 
         if ! cp -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$target"; then
             log "ERROR: Failed to copy font to $target"
