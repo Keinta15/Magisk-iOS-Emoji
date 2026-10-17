@@ -26,6 +26,27 @@ GMS_FONT_DIR_PATTERN="com.google.android.gms/files/fonts"
 ORCA_FONT_DIR1="/data/data/com.facebook.orca/files/fonts"
 ORCA_FONT_DIR2="/data/user/0/com.facebook.orca/files/fonts"
 
+# Locate chattr. It is usually missing from PATH when this script is started
+# from the Action button (action.sh unsets ASH_STANDALONE), so fall back to
+# the root manager's busybox.
+CHATTR=""
+if command -v chattr >/dev/null 2>&1; then
+    CHATTR="chattr"
+else
+    for bb in /data/adb/ksu/bin/busybox /data/adb/ap/bin/busybox /data/adb/magisk/busybox; do
+        if [ -x "$bb" ] && "$bb" --list 2>/dev/null | grep -qx chattr; then
+            CHATTR="$bb chattr"
+            break
+        fi
+    done
+fi
+
+# Usage: set_immutable +i|-i <file>  (errors ignored; returns non-zero on failure)
+set_immutable() {
+    [ -n "$CHATTR" ] || return 1
+    $CHATTR "$1" "$2" 2>/dev/null
+}
+
 # Ensure the log directory exists
 mkdir -p "$MODPATH"
 
@@ -99,6 +120,9 @@ replace_emoji_fonts() {
 
     # Replace each emoji font with the custom font
     for font in $EMOJI_FONTS; do
+        # Remove immutable flag (set by a previous run) so the file can be replaced
+        set_immutable -i "$font"
+
         # Check if the target font file is writable
         if [ ! -w "$font" ]; then
             log "ERROR: Font file is not writable: $font"
@@ -139,6 +163,9 @@ lock_messenger_emoji() {
 
         log "INFO: Locking emoji file for $pkg"
 
+        # Remove immutable flag (set by a previous run) so the file can be overwritten
+        set_immutable -i "$target"
+
         if ! cp -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$target"; then
             log "ERROR: Failed to copy font to $target"
             continue
@@ -151,10 +178,10 @@ lock_messenger_emoji() {
         fi
 
         # Try to make the file truly immutable
-        if chattr +i "$target" 2>/dev/null; then
+        if set_immutable +i "$target"; then
             log "INFO: Successfully made file immutable (chattr +i): $target"
         else
-            log "INFO: chattr +i not supported or failed (normal on some filesystems) - using read-only fallback"
+            log "INFO: chattr +i unavailable or failed - using read-only fallback"
         fi
     done
 
