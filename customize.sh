@@ -16,6 +16,17 @@ ui_print "*************************************"
 ui_print "*          iOS Emoji 26.4           *"
 ui_print "*************************************"
 
+# KernelSU 3.x / APatch only mount /system files of modules when a metamodule
+# (e.g. meta-overlayfs) is installed. Without one, the system emoji font is
+# NOT replaced and only the Facebook/Messenger in-app copy will work.
+if [ "$KSU" = "true" ] || [ "$APATCH" = "true" ]; then
+    if [ ! -e /data/adb/metamodule ]; then
+        ui_print "! No metamodule detected."
+        ui_print "! Install a metamodule (e.g. meta-overlayfs), then reinstall"
+        ui_print "! this module, or the system emoji will stay unchanged."
+    fi
+fi
+
 # Definitions
 FONT_DIR="$MODPATH/system/fonts"
 FONT_EMOJI="NotoColorEmoji.ttf"
