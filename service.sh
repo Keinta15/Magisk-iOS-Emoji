@@ -26,9 +26,9 @@ GMS_FONT_DIR_PATTERN="com.google.android.gms/files/fonts"
 ORCA_FONT_DIR1="/data/data/com.facebook.orca/files/fonts"
 ORCA_FONT_DIR2="/data/user/0/com.facebook.orca/files/fonts"
 
-# Locate chattr. It is usually missing from PATH when this script is started
-# from the Action button (action.sh unsets ASH_STANDALONE), so fall back to
-# the root manager's busybox.
+# chattr is only used to clear an immutable flag left behind by older versions
+# of this module. The module itself no longer sets +i: an immutable file inside
+# an app's data directory breaks app updates and "clear data".
 CHATTR=""
 if command -v chattr >/dev/null 2>&1; then
     CHATTR="chattr"
@@ -41,10 +41,35 @@ else
     done
 fi
 
-# Usage: set_immutable +i|-i <file>  (errors ignored; returns non-zero on failure)
-set_immutable() {
-    [ -n "$CHATTR" ] || return 1
-    $CHATTR "$1" "$2" 2>/dev/null
+# Usage: clear_immutable <file>  (errors ignored)
+clear_immutable() {
+    [ -n "$CHATTR" ] || return 0
+    $CHATTR -i "$1" 2>/dev/null
+    return 0
+}
+
+# Give a path created by root the same owner and SELinux context as the
+# app's data directory, otherwise the app cannot read it.
+# Usage: fix_owner_context <path> <reference dir>
+fix_owner_context() {
+    local target="$1" ref="$2" owner
+    owner=$(stat -c %u:%g "$ref" 2>/dev/null)
+    [ -n "$owner" ] && chown "$owner" "$target" 2>/dev/null
+    if command -v restorecon >/dev/null 2>&1; then
+        restorecon "$target" 2>/dev/null
+    else
+        chcon --reference="$ref" "$target" 2>/dev/null
+    fi
+}
+
+# Every file this module copies into app data is recorded here, so that
+# uninstall.sh can remove exactly those files even if the font (and so its
+# size) changes between module versions.
+LISTFILE="$MODPATH/installed.list"
+
+# Usage: record_installed <path>  (no duplicates)
+record_installed() {
+    grep -qxF "$1" "$LISTFILE" 2>/dev/null || echo "$1" >> "$LISTFILE"
 }
 
 # Ensure the log directory exists
@@ -121,7 +146,7 @@ replace_emoji_fonts() {
     # Replace each emoji font with the custom font
     for font in $EMOJI_FONTS; do
         # Remove immutable flag (set by a previous run) so the file can be replaced
-        set_immutable -i "$font"
+        clear_immutable "$font"
 
         # Check if the target font file is writable
         if [ ! -w "$font" ]; then
@@ -134,6 +159,7 @@ replace_emoji_fonts() {
             log "ERROR: Failed to replace emoji font: $font"
         else
             log "INFO: Successfully replaced emoji font: $font"
+            record_installed "$font"
         fi
 
         # Set permissions for the replaced file
@@ -150,7 +176,7 @@ replace_emoji_fonts() {
 replace_emoji_fonts
 
 lock_messenger_emoji() {
-    log "INFO: Applying permanent Messenger/Facebook emoji lock..."
+    log "INFO: Applying Messenger/Facebook emoji override..."
 
     for pkg in $FACEBOOK_APPS; do
         if [ ! -d "/data/data/$pkg" ]; then
@@ -159,33 +185,32 @@ lock_messenger_emoji() {
         fi
 
         target="/data/data/$pkg/app_ras_blobs/FacebookEmoji.ttf"
-        mkdir -p "/data/data/$pkg/app_ras_blobs"
+        if [ ! -d "/data/data/$pkg/app_ras_blobs" ]; then
+            mkdir -p "/data/data/$pkg/app_ras_blobs"
+            fix_owner_context "/data/data/$pkg/app_ras_blobs" "/data/data/$pkg"
+        fi
 
         log "INFO: Locking emoji file for $pkg"
 
         # Remove immutable flag (set by a previous run) so the file can be overwritten
-        set_immutable -i "$target"
+        clear_immutable "$target"
 
         if ! cp -f "$MODPATH/system/fonts/NotoColorEmoji.ttf" "$target"; then
             log "ERROR: Failed to copy font to $target"
             continue
         fi
 
+        fix_owner_context "$target" "/data/data/$pkg"
+        record_installed "$target"
+
         if ! chmod 444 "$target"; then
             log "ERROR: Failed to set read-only permissions on $target"
         else
             log "INFO: Successfully set read-only permissions on $target"
         fi
-
-        # Try to make the file truly immutable
-        if set_immutable +i "$target"; then
-            log "INFO: Successfully made file immutable (chattr +i): $target"
-        else
-            log "INFO: chattr +i unavailable or failed - using read-only fallback"
-        fi
     done
 
-    log "INFO: Permanent Messenger/Facebook emoji lock completed."
+    log "INFO: Messenger/Facebook emoji override completed."
 }
 
 lock_messenger_emoji
